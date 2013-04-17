@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130410030803) do
+ActiveRecord::Schema.define(:version => 20130416172124) do
+
+  create_table "map_objects", :force => true do |t|
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "category"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "panics", :force => true do |t|
     t.integer  "position_id"
@@ -36,12 +45,10 @@ ActiveRecord::Schema.define(:version => 20130410030803) do
     t.string   "address"
   end
 
-
   create_table "taxis", :force => true do |t|
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.string   "installation_id"
   end
-
 
 end

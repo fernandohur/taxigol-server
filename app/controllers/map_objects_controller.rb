@@ -2,7 +2,14 @@ class MapObjectsController < ApplicationController
   # GET /map_objects
   # GET /map_objects.json
   def index
-    @map_objects = MapObject.all
+
+    category = params[:category]
+
+    if category!=nil
+      @map_objects = MapObject.get_by_category(category)
+    else
+      @map_objects = MapObject.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,7 +47,7 @@ class MapObjectsController < ApplicationController
   # POST /map_objects
   # POST /map_objects.json
   def create
-    @map_object = MapObject.new(params[:map_object])
+    @map_object = MapObject.construct(params[:category],params[:latitude],params[:longitude],params[:description])
 
     respond_to do |format|
       if @map_object.save

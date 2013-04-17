@@ -21,6 +21,16 @@ class ActiveSupport::TestCase
 
   end
 
+  def should_contain_map_object(map_object_array, map_object)
+    contains = false
+    map_object_array.each do |t|
+      if should_equal_map_object(t,map_object)
+        contains = true
+      end
+    end
+    assert contains
+  end
+
   def should_contain_taxi(taxis_array, taxi)
 
     contains = false
@@ -48,6 +58,14 @@ class ActiveSupport::TestCase
 
   def should_equal_service(service_as_json,service)
     service_as_json["id"]==service.id && service_as_json["address"]==service.address && service_as_json["verification_code"]==service.verification_code
+  end
+
+  def should_equal_map_object(map_object_json, map_object)
+
+    map_object_json["id"] == map_object.id &&
+        map_object_json["category"] == map_object.category &&
+        map_object_json["latitude"] == map_object.latitude &&
+        map_object_json["longitude"] == map_object.longitude
   end
 
 
