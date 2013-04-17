@@ -1,0 +1,3 @@
+class StateChangeError < ArgumentError
+
+end

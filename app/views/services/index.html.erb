@@ -1,0 +1,10 @@
+<h1>"Visualización de la gráfica"</h1>
+
+<div class="splitcontentright">
+  <center>
+    <%= tag("embed",
+            :type => "image/png",
+            :src => url_for(:controller => "services",
+                            :action => "pie_graph")) %>
+  </center>
+</div>

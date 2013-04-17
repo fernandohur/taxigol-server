@@ -1,0 +1,29 @@
+<h1>Listing map_objects</h1>
+
+<table>
+  <tr>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th>Category</th>
+    <th>Description</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @map_objects.each do |map_object| %>
+  <tr>
+    <td><%= map_object.latitude %></td>
+    <td><%= map_object.longitude %></td>
+    <td><%= map_object.category %></td>
+    <td><%= map_object.description %></td>
+    <td><%= link_to 'Show', map_object %></td>
+    <td><%= link_to 'Edit', edit_map_object_path(map_object) %></td>
+    <td><%= link_to 'Destroy', map_object, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Map object', new_map_object_path %>

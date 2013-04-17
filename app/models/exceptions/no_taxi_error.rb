@@ -1,0 +1,3 @@
+class NoTaxiError < StandardError
+
+end

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Address:</b>
+  <%= @service.address %>
+</p>
+
+<p>
+  <b>Confirm:</b>
+  <%= @service.state %>
+</p>
+
+<a onclick="cancelar_servicio()">Para Cancelar</a>
+
+<script>
+    function cancelar_servicio(){
+        $.ajax({
+            type: "PUT" ,
+            url: "<%= @service.id.to_s << ".json"%>",
+            data: {state: "cancelado"}
+        }).done(function(msg){
+                    alert("Taxi Cancelado:" + msg);
+                });
+    };
+</script>
+
+<%= link_to 'Back', services_path %>

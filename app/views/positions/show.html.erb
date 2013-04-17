@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Latitude:</b>
+  <%= @position.latitude %>
+</p>
+
+<p>
+  <b>Longitude:</b>
+  <%= @position.longitude %>
+</p>
+
+<p>
+  <b>Taxi:</b>
+  <%= @position.taxi_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_position_path(@position) %> |
+<%= link_to 'Back', positions_path %>
