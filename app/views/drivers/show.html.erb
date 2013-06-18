@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @driver.name %>
+</p>
+
+<p>
+  <b>Cedula:</b>
+  <%= @driver.cedula %>
+</p>
+
+<p>
+  <b>Photo url:</b>
+  <%= @driver.photo_url %>
+</p>
+
+
+<%= link_to 'Edit', edit_driver_path(@driver) %> |
+<%= link_to 'Back', drivers_path %>

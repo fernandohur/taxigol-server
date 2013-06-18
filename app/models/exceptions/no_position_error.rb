@@ -1,0 +1,3 @@
+class NoPositionError < ArgumentError
+
+end

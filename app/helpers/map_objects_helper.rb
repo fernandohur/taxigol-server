@@ -1,0 +1,2 @@
+module MapObjectsHelper
+end
