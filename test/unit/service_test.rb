@@ -117,6 +117,26 @@ class ServiceTest < ActiveSupport::TestCase
 
   end
 
+  test 'construct Service with latitude,longitude & tip should assign attrs correctly' do
+    verification_code = '98'
+    address = 'calle 132 a # 19-43'
+    latitude = 12.89
+    longitude = 12.23
+    tip = '50000'
+    s = Service.construct(verification_code,address, latitude, longitude, tip)
+    s.save
+
+    assert s.verification_code==verification_code
+    assert s.address == address
+    assert s.latitude == latitude
+    assert s.longitude == longitude
+    assert s.tip == tip
+
+    assert s.is_pending
+    assert s.get_state==Service.pending
+
+  end
+
   test ' get_pending_or_confirmed should return all services with state confirmed by taxi or pending' do
 
     #init services

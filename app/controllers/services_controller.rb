@@ -50,9 +50,12 @@ class ServicesController < ApplicationController
     longitude = params[:longitude]
     verification_code = params[:verification_code]
     address = params[:address]
-
-    @service = Service.construct(verification_code,address,latitude,longitude)
-
+    tip = params[:tip]
+    if !tip
+    	@service = Service.construct(verification_code,address,latitude,longitude)
+    else
+    	@service = Service.construct(verification_code, address, latitude,longitude, tip)
+    end
     respond_to do |format|
       if @service.save
         message_sender = MessageSender.new

@@ -205,6 +205,29 @@ class ServicesControllerTest < ActionController::TestCase
     assert s.verification_code == verification_vode
     assert s.longitude == nil, "longitude shold be nil but was #{s.longitude}"
     assert s.latitude == nil
+    assert_equal s.tip, ''
+  end
+
+  test 'post to create should init all vars' do
+  	address = 'calle 132 a # 19-43'
+  	verification_code = '12'
+  	latitude = 12.995
+  	longitude = -92.352
+  	tip = '50.000'
+  	post :create, {
+  		:format => :json,
+  		:address => address,
+  		:verification_code => verification_code,
+  		:latitude => latitude,
+  		:longitude => longitude,
+  		:tip => tip }
+
+  	s = Service.last
+  	json = MultiJson.load(@response.body)
+  	should_match_service(json,s)
+  	assert_not_nil json['tip']
+  	assert_equal tip, json['tip']
+
   end
 
 
