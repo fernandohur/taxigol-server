@@ -1,6 +1,8 @@
 class PositionsController < ApplicationController
-  # GET /positions
-  # GET /positions.json
+
+  # @route /positions
+  # @method GET
+  # @return
   def index
     @positions = Position.all
 
@@ -19,6 +21,7 @@ class PositionsController < ApplicationController
     end
   end
 
+  # GET /positions/get_last
   def get_last
     taxi_id = params[:taxi_id]
     taxi = Taxi.find(taxi_id)
