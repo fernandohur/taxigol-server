@@ -52,11 +52,13 @@ class ServicesController < ApplicationController
     verification_code = params[:verification_code]
     address = params[:address]
     tip = params[:tip]
-    if !tip
+
+    if tip
     	@service = Service.construct(verification_code, address, latitude,longitude, tip)
     else
     	@service = Service.construct(verification_code,address,latitude,longitude)
     end
+
     respond_to do |format|
       if @service.save
         message_sender = MessageSender.new
@@ -78,7 +80,6 @@ class ServicesController < ApplicationController
     rescue Service::StateChangeError => e
       render_error(e)
     end
-
   end
 
 	# DELETE /services/1
