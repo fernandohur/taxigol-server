@@ -5,7 +5,7 @@ class ServicesController < ApplicationController
   #params :taxi_id optionally receives a taxi id in which case returns all Services who's taxi_id matches the parameter
   def index
     taxi_id = params[:taxi_id]
-    if taxi_id
+    if taxi_id && taxi_id.to_s.length>0
       @services = Service.get_pending_or_confirmed(taxi_id)
     else
       @services = Service.all
