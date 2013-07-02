@@ -1,19 +1,24 @@
-<h1>"Visualización de la gráfica"</h1>
+<h1>Listado de Servicios</h1>
 
-<div class="splitcontentright">
-  <center>
-    <%= tag("embed",
-            :type => "image/png",
-            :src => url_for(:controller => "services",
-                            :action => "pie_graph")) %>
-  </center>
-</div>
-
-<div class="splitcontentright">
-  <center>
-    <%= tag("embed",
-            :type => "image/png",
-            :src => url_for(:controller => "services",
-                            :action => "bar_graph")) %>
-  </center>
-</div>
+<table>
+	<tr>
+		<td>Taxi id</td>
+		<td>Código de seguridad</td>
+		<td>Dirección</td>
+		<td>Latitud</td>
+		<td>Longitud</td>
+		<td>Estado</td>
+		<td>Propina</td>
+	</tr>
+<% @services.each do |s| %>
+	<tr>
+		<td><%= s.taxi_id %></td>
+		<td><%= s.verification_code %></td>
+		<td><%= s.address %></td>
+		<td><%= s.latitude %></td>
+		<td><%= s.longitude %></td>
+		<td><%= s.state %></td>
+		<td><%= s.tip %></td>
+	</tr>
+<% end %>
+</table>
