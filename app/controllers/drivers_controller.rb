@@ -43,12 +43,12 @@ class DriversController < ApplicationController
   # POST /drivers.json
   def create
 
-    placa		 = params[:placa]
-    cedula	 = params[:cedula]
+    placa = params[:placa]
+    cedula = params[:cedula]
     password = params[:password]
-    name		 = params[:name]
-
-    @driver = Driver.construct(name, cedula, password, placa)
+    name = params[:name]
+		cel_number = params[:cel_number] 		
+		@driver = Driver.construct(name, cedula, password, placa,cel_number)
 
     respond_to do |format|
       if @driver.save
