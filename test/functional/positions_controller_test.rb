@@ -36,7 +36,6 @@ class PositionsControllerTest < ActionController::TestCase
 
     resp = MultiJson.load(@response.body)
     assert resp.size == Position.all.size
-
   end
 
   #
@@ -55,7 +54,6 @@ class PositionsControllerTest < ActionController::TestCase
       assert_json_matches_position(resp, @taxi.positions.last)
       assert_json_matches_position(resp, @taxi.get_last_position)
     end
-
   end
 
   #
@@ -74,6 +72,26 @@ class PositionsControllerTest < ActionController::TestCase
   end
 
   #
+  # GIVEN a GET request is sent to :get_last 
+  # AND the taxi has only 1 position
+  # THEN that position should be returned
+  #
+  test "get to :get_last given only one position should return that position" do
+
+    temp_position = Position.new(:latitude=>rand*100,:longitude=>rand*100,:taxi_id=>@taxi2.id)
+    temp_position.save!
+    @taxi2.reload
+    
+    get :get_last, {:format => :json, :taxi_id => @taxi2.id}
+    assert_response :success
+    resp = MultiJson.load(@response.body)
+    assert_json_matches_position resp, temp_position
+    assert_json_matches_position resp, @taxi2.get_last_position
+    assert_json_matches_position resp, @taxi2.positions.last
+
+  end
+
+  #
   # GIVEN a GET request is sent to :get_last
   # AND the taxi has no positions
   # THEN a NoPositionError should be raised
@@ -82,7 +100,5 @@ class PositionsControllerTest < ActionController::TestCase
 
     get :get_last, {:format=>:json,:taxi_id=>@taxi2.id}
     should_contain_error_message(@response, NoPositionError)
-
   end
-
 end

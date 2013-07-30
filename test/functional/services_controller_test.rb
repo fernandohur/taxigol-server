@@ -2,10 +2,72 @@ require 'test_helper'
 
 class ServicesControllerTest < ActionController::TestCase
 
+  #=======================================
+  # Helper methods go here
+  #=======================================
+
   def should_match_service(service_json, service)
     service_json["id"]==service.id && service_json["taxi_id"]==service.taxi_id && service_json["address"] == service.address
   end
 
+  # Creates a service with a random address and a random verification code
+  # Use Service.last to access the created service
+  def create_service
+    assert_difference 'Service.all.size',1 do
+      post :create, {:format=>:json, :address=>rand.to_s, :verification_code=>(rand*100).to_i.to_s}
+    end
+    return Service.last
+  end
+
+  # convenience method that creates a random service, confirms it and completes it
+  def create_confirm_complete
+    # Create a service
+    service = create_service
+    # Confirm it
+    confirm_service service.id, @taxi.id
+    # Complete it
+    complete_service service.id, @taxi.id, service.verification_code  
+    assert_completed service.id
+    return service
+  end
+
+  # asserts that the service with the given id is confirmed
+  def assert_confirmed(service_id)
+    service = Service.find(service_id)
+    assert service.is_confirmed, "expected #{Service.confirmed} but was #{service.get_state}"
+  end
+
+  # asserts that the service with the given id is confirmed
+  def assert_pending(service_id)
+    service = Service.find(service_id)
+    assert service.is_pending, "expected #{Service.pending} but was #{service.get_state}"
+  end
+
+  # asserts that the service with the given id is completed
+  def assert_completed(service_id)
+    service = Service.find(service_id)
+    assert service.is_complete, "expected #{Service.complete} but was #{service.get_state}"
+  end
+
+  # marks a service as confirmed
+  def confirm_service(service_id, taxi_id)
+    assert_no_difference 'Service.all.size' do
+      put :update, {:format=>:json, :id=>service_id, :state=>Service.confirmed, :taxi_id=>taxi_id}
+    end
+  end
+
+  # marks a service as completed
+  def complete_service(service_id, taxi_id, verification_code)
+    assert_no_difference 'Service.all.size' do 
+      put :update, {:format=>:json, :id=>service_id, 
+        :state=>Service.complete, :taxi_id=>taxi_id, :verification_code=>verification_code} 
+    end
+
+  end
+
+  #
+  # test setup method
+  #
   setup do
 
     @service1 = Service.construct("12","calle 132 a # 19-43")
@@ -25,73 +87,107 @@ class ServicesControllerTest < ActionController::TestCase
 
   end
 
+  #===================================
+  # Test methods go here
+  #===================================
+
+  #
+  # Simple test to verify setup method
+  #
   test "verify setup" do
     assert Taxi.all.size == 2
     assert Taxi.first.positions.size == 1, "There must be 1 positions but there are #{Taxi.first.positions.size}"
     assert Service.get_by_state(Service.confirmed).size == 0
+    assert_pending @service1.id
+    assert_pending @service2.id
+    assert_pending @service3.id
   end
 
-  test "confirm service1" do
+  #
+  # GIVEN a PUT request is sent to :update 
+  # AND the state parameter is invalid (i.e. "blah")
+  # THEN a state change error should be returned
+  #
+  test "changing state to invalid state should raise error" do
 
     put :update, {:format=>:json, :id=>@service1.id, :state=>"blah", :taxi_id=>@taxi.id}
     should_contain_error_message(@response, Service::StateChangeError)
-    assert @service1.is_pending, "expected #{Service.pending} but was #{@service1.get_state}"
-    assert @service1.get_state == Service.pending
-
-    put :update, {:format=>:json, :id=>@service1.id, :state=>Service.confirmed, :taxi_id=>@taxi.id}
-    resp = MultiJson.load(@response.body)
-    should_match_service(resp, @service1)
-    assert @service1.reload.is_confirmed, "expected service confirmed but was #{@service1.get_state}"
-
   end
 
+  #
+  # GIVEN a new service
+  # THEN it's state must be pending
+  #
+  test "initial state should be 'pending'" do
+    # test for a newly created service
+    create_service
+    assert_pending Service.last.id
+    # test for existing service '@service1'
+    assert_pending @service1.id
+  end    
+
+  #
+  # GIVEN @service1 is pending
+  # AND a PUT request is made to :update with :state=>Service.confirmed
+  # THEN the service's state should be changed to confirmed
+  #
+  test "sending a PUT to :update with :state=>confirmed should confirm service" do
+
+    confirm_service @service1.id, @taxi.id
+    resp = MultiJson.load(@response.body)
+    @service1 = @service1.reload
+    should_match_service(resp, @service1)
+    assert_confirmed @service1.id
+  end
+
+  #
+  #
+  #
   test "confirm + complete service1" do
 
-    assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>"a", :verification_code=>"99"}
-    end
+    @service = create_service
 
     assert_no_difference 'Service.all.size' do
-      #confirming service
-      @service = Service.last
-      put :update, {:format=>:json, :id=>@service.id, :state=>Service.confirmed, :taxi_id=>@taxi.id}
+      
+      # Step 1. update a service to confirmed
+      confirm_service @service.id, @taxi.id
       @service = @service.reload
-      assert @service.is_confirmed
+      assert_confirmed @service.id
       assert @service.taxi_id == @taxi.id
       resp = MultiJson.load(@response.body)
       should_match_service(resp, Service.last)
 
-      #marking as done
-      put :update, {:format=>:json, :id=>@service.id, :state=>Service.complete, :taxi_id=>@taxi.id, :verification_code=>"99"}
-
+      # Step 2. update the to complete
+      put :update, {:format=>:json, :id=>@service.id, :state=>Service.complete, :taxi_id=>@taxi.id, :verification_code=>@service.verification_code}
+      complete_service @service.id, @taxi.id, @service.verification_code
       @service = @service.reload
-      assert @service.is_complete , " service's state was #{@service.get_state} "
+      assert_completed @service.id
       should_match_service(MultiJson.load(@response.body),@service)
     end
 
   end
 
+  #
+  # GIVEN a completed service
+  # AND an attempt is made to cancel it
+  # THEN a StateChangeError should be launched 
+  #
   test "confirm + complete + cancel should raise Service::StateChangeError" do
 
-    post :create, {:format=>:json, :address=>"a", :verification_code=>"99"}
-    put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.confirmed, :taxi_id=>@taxi.id}
-    put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.complete, :taxi_id=>@taxi.id, :verification_code=>"99"}
+    create_confirm_complete
 
-    assert Service.last.is_complete
-
+    # try to cancel it
     put :update, {:format=>:json, :id=>Service.last.id, :state=> Service.cancelled}
     should_contain_error_message(@response, Service::StateChangeError)
 
   end
 
+
   test "confirm + complete + abandon should raise Service::StateChangeError" do
 
-    post :create, {:format=>:json, :address=>"a", :verification_code=>"99"}
-    put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.confirmed, :taxi_id=>@taxi.id}
-    put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.complete, :taxi_id=>@taxi.id, :verification_code=>"99"}
+    create_confirm_complete
 
-    assert Service.last.is_complete
-
+    # attempt to abandon
     put :update, {:format=>:json, :id=>Service.last.id, :state=> Service.abandoned, :taxi_id=>@taxi.id}
     should_contain_error_message(@response, Service::StateChangeError)
 
@@ -99,12 +195,9 @@ class ServicesControllerTest < ActionController::TestCase
 
   test "confirm + complete + pending should raise Service::StateChangeError" do
 
-    post :create, {:format=>:json, :address=>"a", :verification_code=>"99"}
-    put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.confirmed, :taxi_id=>@taxi.id}
-    put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.complete, :taxi_id=>@taxi.id, :verification_code=>"99"}
+    create_confirm_complete
 
-    assert Service.last.is_complete
-
+    # attempt to set pending
     put :update, {:format=>:json, :id=>Service.last.id, :state=> Service.pending, :taxi_id=>@taxi.id}
     should_contain_error_message(@response, Service::StateChangeError)
 
@@ -112,7 +205,7 @@ class ServicesControllerTest < ActionController::TestCase
 
   test "confirm + cancel should cancel" do
 
-    post :create, {:format=>:json, :address=>"a", :verification_code=>"99"}
+    create_service
     put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.confirmed, :taxi_id=>@taxi.id}
     put :update, {:format=>:json, :id=>Service.last.id, :state=>Service.cancelled}
 
@@ -161,7 +254,6 @@ class ServicesControllerTest < ActionController::TestCase
     should_contain_service(services,@service2)
     should_contain_service(services,@service3)
     assert Service.all.size==3
-
   end
 
   test "get to index with params should return only specific" do
@@ -174,8 +266,6 @@ class ServicesControllerTest < ActionController::TestCase
     should_contain_service(services,@service1)
     should_contain_service(services,@service3)
     assert services.size==3
-
-
   end
 
   test "post to create with latitude and longitude should init those attrs" do
@@ -191,18 +281,17 @@ class ServicesControllerTest < ActionController::TestCase
     assert s.verification_code == verification_code
     assert s.latitude == latitude
     assert s.longitude == longitude
-
   end
 
   test 'post with no lat should not init lat nor lon' do
     address = 'calle 132 a # 19-43'
-    verification_vode = '12'
+    verification_code = '12'
     assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>address, :verification_code=>verification_vode}
+      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code}
     end
     s = Service.last
     assert s.address == address
-    assert s.verification_code == verification_vode
+    assert s.verification_code == verification_code
     assert s.longitude == nil, "longitude shold be nil but was #{s.longitude}"
     assert s.latitude == nil
     assert_equal s.tip, ''
@@ -227,11 +316,7 @@ class ServicesControllerTest < ActionController::TestCase
   	should_match_service(json,s)
   	assert_not_nil json['tip']
   	assert_equal tip, json['tip']
-
   end
-
-
-
 
 end
 
