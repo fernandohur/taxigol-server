@@ -68,10 +68,36 @@ class ActiveSupport::TestCase
         map_object_json["longitude"] == map_object.longitude
   end
 
+  #
+  # asserts that a json string representation of a position matches
+  # a position's values. This method checks that id, taxi_id, latitude, longitude
+  # match. If at least one field does not match, an assertion error will be raised
+  # @resp a json string with the following structure
+  #
+  # {
+  #   "id":(id num),
+  #  "taxi_id":(taxi id as a number),
+  #   "latitude":(num),
+  #   "longitude":(num)
+  # }
+  # @pos a Position object
+  # @return void
   def assert_json_matches_position(resp, pos)
+    assert_equal resp['id'], pos.id 
+    assert_equal resp['taxi_id'], pos.taxi_id
+    assert_equal resp['latitude'], pos.latitude
+    assert_equal resp['longitude'], pos.longitude
+  end
 
-    assert resp['id']==pos.id && resp['taxi_id'] == pos.taxi_id && resp['latitude'] == pos.latitude && resp['longitude'] == pos.longitude
-
+  # Similar to assert_json_matches_position, this method
+  # asserts that the given json string does NOT match the Position
+  # object 
+  def assert_json_not_matches_position(resp, pos)
+    id_match = resp['id'] == pos.id 
+    taxi_id_match = resp['taxi_id'] == pos.taxi_id
+    lat_match = resp['latitude'] == pos.latitude
+    lon_match = resp['longitude'] == pos.longitude
+    assert !id_match || !taxi_id_match || !lat_match || !lon_match
   end
 
 
