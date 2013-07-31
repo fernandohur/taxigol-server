@@ -2,17 +2,89 @@ require 'test_helper'
 
 class ServiceTest < ActiveSupport::TestCase
 
-	#
-  test "if a service is created then the state must be pendiente" do
-    s = Service.construct("abc","address")
-    s.save
-    assert s.is_pending, "state must be pendiente"
+  #
+  # Helper methods
+  #
 
+  def assert_confirmed(service)
+    assert service.is_confirmed, "service #{service.id} should have been confirmed, but was #{service.state}"
+    assert_equal service.get_state, Service.confirmed
   end
 
+  def assert_complete(service)
+    assert service.is_complete, "service #{service.id} should have been complete, but was #{service.state}"
+    assert_equal service.get_state, Service.complete
+  end
+
+  def assert_pending(service)
+    assert service.is_pending, "service #{service.id} should have been pending, but was #{service.state}"
+    assert_equal service.get_state, Service.pending 
+  end
+
+  def assert_cancelled(service)
+    assert service.is_canceled, "service #{service.id} should have been canceled, but was #{service.state}"
+    assert_equal service.get_state, Service.cancelled
+  end
+
+  def create_service()
+    address = "address"+rand.to_s
+    verification_code = (100*rand).to_i.to_s
+    latitude = rand
+    longitude = rand
+    tip = rand.to_s
+    service = Service.construct(verification_code,address, latitude, longitude, tip)
+    
+    assert_pending service
+    assert_equal service.address, address
+    assert_equal service.verification_code, verification_code
+    assert_equal service.latitude,latitude
+    assert_equal service.longitude,longitude
+    assert_equal service.tip,tip
+
+    return service    
+  end
+
+  def create_service_confirmed(taxi_id)
+    service = create_service
+    assert_pending service
+
+    Service.update_confirm(service, taxi_id)
+    service.save!
+    return service
+  end
+
+  def create_service_complete(taxi_id, verification_code)
+    service = create_service_confirmed
+    assert_confirmed service
+
+    Service.update_cumplido(service, taxi_id, verification_code)
+    service.save!
+    return service
+  end
+
+  #=========================0
+  # Test methods go here
+  #=========================0
+
+  #setup method
+  setup do
+    Taxi.delete_all
+    Service.delete_all
+  end
+
+	# GIVEN a new service is created
+  # THEN it's state must be pending
+  test "if a service is created then the state must be pendiente" do
+    s = create_service
+    s.save
+    assert_pending s
+  end
+
+  # GIVEN a service s is created
+  # THEN verification_code, address, taxi, taxi_id and id must not be nil
   test "if a Service is created then the verification code and address must not be nil" do
 
-    s = Service.construct("abc","address")
+    s = create_service
     s.save
 
     assert s.verification_code != nil
@@ -23,57 +95,43 @@ class ServiceTest < ActiveSupport::TestCase
 
   end
 
-  test "if a Service is created then it can be canceled from :pendiente" do
-
-    Taxi.delete_all
-    Service.delete_all
-
+  # GIVEN a service is created
+  # AND an attempt is made to cancel it
+  # THEN the service's state must be cancelled
+  test "if a Service is created then it can be canceled" do
 
     #Canceling from pendiente
-    s = Service.construct("123","asd")
+    s = create_service
     s.save
-
     Service.update_cancel(s)
 
-    assert s.is_canceled
-    assert s.verification_code == "123"
-
+    assert_cancelled s
   end
 
+  # GIVEN a service is created
+  # AND the state is confirmado
+  # THEN it can be cancelled
   test "if a Service is created then it can be canceled from :confirmado" do
 
-    Taxi.delete_all
-    Service.delete_all
     taxi = Taxi.get_or_create("taxi")
 
     ##canceling from confirmado
-    s = Service.construct("123","asd")
-    s.save
-
-    Service.update_confirm(s,taxi.id)
-    assert s.is_confirmed, "taxi state must be :confirmed "
+    s = create_service_confirmed(taxi.id)
+    assert_confirmed s
 
     Service.update_cancel(s)
     assert s.is_canceled
-    assert s.verification_code == "123"
-
   end
 
   test "if a Service is created then it can be canceled from :cumplido" do
 
-    Taxi.delete_all
-    Service.delete_all
     taxi = Taxi.get_or_create("taxi")
 
-    ##canceling from confirmado
-    s = Service.construct("123","asd")
-    s.save
+    #canceling from confirmado
+    s = create_service_confirmed(taxi.id)
 
-    Service.update_confirm(s,taxi.id)
-    assert s.is_confirmed, "taxi state must be :confirmed "
-
-    Service.update_cumplido(s,taxi.id,"123")
-    assert s.is_complete
+    Service.update_cumplido(s,taxi.id,s.verification_code)
+    assert_complete s
 
     begin
       Service.update_cancel(s)
@@ -99,6 +157,8 @@ class ServiceTest < ActiveSupport::TestCase
 
   end
 
+  # this method tests that the constructor effectively
+  # assigns correct values
   test 'test new with pos should assign attrs correctly' do
     verification_code = '98'
     address = 'calle 132 a # 19-43'
@@ -111,9 +171,8 @@ class ServiceTest < ActiveSupport::TestCase
     assert s.address == address
     assert s.latitude == latitude
     assert s.longitude == longitude
-
-    assert s.is_pending
-    assert s.get_state==Service.pending
+    assert_equal s.tip,''
+    assert_pending s
 
   end
 
