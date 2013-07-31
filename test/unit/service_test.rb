@@ -111,7 +111,7 @@ class ServiceTest < ActiveSupport::TestCase
   # GIVEN a service is created
   # AND the state is confirmado
   # THEN it can be cancelled
-  test "if a Service is created then it can be canceled from :confirmado" do
+  test "a service can be canceled if it is confirmed" do
 
     taxi = Taxi.get_or_create("taxi")
 
@@ -123,7 +123,7 @@ class ServiceTest < ActiveSupport::TestCase
     assert s.is_canceled
   end
 
-  test "if a Service is created then it can be canceled from :cumplido" do
+  test "a service can NOT be canceled if it is completed" do
 
     taxi = Taxi.get_or_create("taxi")
 
@@ -140,6 +140,30 @@ class ServiceTest < ActiveSupport::TestCase
       # all is ok :)
     end
 
+  end
+
+  test 'a service cannot be completed if it is pending' do
+    
+    taxi = Taxi.get_or_create("taxi")
+
+    s = create_service
+    begin 
+      Service.update_cumplido s, taxi.id, s.verification_code 
+    rescue Service::StateChangeError
+      assert_pending s
+    end
+  end
+
+  test 'a service cannot be abandoned if it is pending' do
+    
+    taxi = Taxi.get_or_create("taxi")
+
+    s = create_service
+    begin 
+      Service.update_abandon s, taxi.id
+    rescue Service::StateChangeError
+      assert_pending s
+    end
   end
 
   test 'To complete Service then state must be :confirmado and verification code must match and taxi_id must match' do
@@ -198,9 +222,6 @@ class ServiceTest < ActiveSupport::TestCase
 
   test ' get_pending_or_confirmed should return all services with state confirmed by taxi or pending' do
 
-    #init services
-    Service.delete_all
-
     s1 = Service.construct('12','address1',12.5,5.12)
     s2 = Service.construct('12','address1',12.5,5.12)
     s3 = Service.construct('12','address1',12.5,5.12)
@@ -218,9 +239,6 @@ class ServiceTest < ActiveSupport::TestCase
       Service.update_confirm(s,-1)
     end
     Service.update_cumplido(s7,-1,'12')
-
-    #init taxis
-    Taxi.delete_all
 
     t1 = Taxi.get_or_create('1')
     t2 = Taxi.get_or_create('2')
@@ -245,10 +263,7 @@ class ServiceTest < ActiveSupport::TestCase
     [s2,s3,s4,s5].each do |s|
       assert temp_services.include? s
     end
-
-
-
-    end
+  end
 
 
 end
