@@ -3,9 +3,9 @@ require 'test_helper'
 class TaxisControllerTest < ActionController::TestCase
   setup do
     Taxi.delete_all
-    @taxi1 = Taxi.get_or_create("123")
-    @taxi2 = Taxi.get_or_create("234")
-    @taxi3 = Taxi.get_or_create("345")
+    @taxi1 = Taxi.get_or_create("asd123")
+    @taxi2 = Taxi.get_or_create("qwe234")
+    @taxi3 = Taxi.get_or_create("ert345")
   end
 
   test "get index no params" do
@@ -39,7 +39,7 @@ class TaxisControllerTest < ActionController::TestCase
 
   test "auth with new installation_id creates a taxi" do
     assert_difference 'Taxi.all.size',1 do
-      post :auth, {:format => :json, :installation_id=>"XYZ_123"}
+      post :auth, {:format => :json, :installation_id=>"XYZ123"}
       r = MultiJson.load(@response.body)
       assert !should_equal_taxi(r,@taxi1)
       assert !should_equal_taxi(r,@taxi2)

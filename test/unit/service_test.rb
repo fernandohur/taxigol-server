@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ServiceTest < ActiveSupport::TestCase
 
-  #
+   #
   # Helper methods
   #
 
@@ -45,19 +45,19 @@ class ServiceTest < ActiveSupport::TestCase
   end
 
   def create_service_confirmed(taxi_id)
-    service = create_service
-    assert_pending service
+    service = create_service()
+    assert_pending(service)
 
     Service.update_confirm(service, taxi_id)
     service.save!
     return service
   end
 
-  def create_service_complete(taxi_id, verification_code)
-    service = create_service_confirmed
+  def create_service_complete(taxi_id)
+    service = create_service_confirmed taxi_id
     assert_confirmed service
 
-    Service.update_cumplido(service, taxi_id, verification_code)
+    Service.update_cumplido(service, taxi_id, service.verification_code)
     service.save!
     return service
   end
@@ -65,12 +65,6 @@ class ServiceTest < ActiveSupport::TestCase
   #=========================0
   # Test methods go here
   #=========================0
-
-  #setup method
-  setup do
-    Taxi.delete_all
-    Service.delete_all
-  end
 
 	# GIVEN a new service is created
   # THEN it's state must be pending
@@ -98,7 +92,7 @@ class ServiceTest < ActiveSupport::TestCase
   # GIVEN a service is created
   # AND an attempt is made to cancel it
   # THEN the service's state must be cancelled
-  test "if a Service is created then it can be canceled" do
+  test "a service can be cancelled if it is pending" do
 
     #Canceling from pendiente
     s = create_service
@@ -113,7 +107,7 @@ class ServiceTest < ActiveSupport::TestCase
   # THEN it can be cancelled
   test "a service can be canceled if it is confirmed" do
 
-    taxi = Taxi.get_or_create("taxi")
+    taxi = Taxi.get_or_create("ASd321")
 
     ##canceling from confirmado
     s = create_service_confirmed(taxi.id)
@@ -125,13 +119,10 @@ class ServiceTest < ActiveSupport::TestCase
 
   test "a service can NOT be canceled if it is completed" do
 
-    taxi = Taxi.get_or_create("taxi")
+    taxi = Taxi.get_or_create("ASd321")
 
     #canceling from confirmado
-    s = create_service_confirmed(taxi.id)
-
-    Service.update_cumplido(s,taxi.id,s.verification_code)
-    assert_complete s
+    s = create_service_complete(taxi.id)
 
     begin
       Service.update_cancel(s)
@@ -144,7 +135,7 @@ class ServiceTest < ActiveSupport::TestCase
 
   test 'a service cannot be completed if it is pending' do
     
-    taxi = Taxi.get_or_create("taxi")
+    taxi = Taxi.get_or_create("ASd321")
 
     s = create_service
     begin 
@@ -156,7 +147,7 @@ class ServiceTest < ActiveSupport::TestCase
 
   test 'a service cannot be abandoned if it is pending' do
     
-    taxi = Taxi.get_or_create("taxi")
+    taxi = Taxi.get_or_create("ASd321")
 
     s = create_service
     begin 
@@ -240,8 +231,8 @@ class ServiceTest < ActiveSupport::TestCase
     end
     Service.update_cumplido(s7,-1,'12')
 
-    t1 = Taxi.get_or_create('1')
-    t2 = Taxi.get_or_create('2')
+    t1 = Taxi.get_or_create("ASd321")
+    t2 = Taxi.get_or_create("ASD222")
     taxis = [t1,t2]
     taxis.each do |t| t.save! end
 

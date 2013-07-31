@@ -3,7 +3,7 @@ require 'test_helper'
 class PositionsControllerTest < ActionController::TestCase
 
   setup do
-    @taxi = Taxi.get_or_create('123')
+    @taxi = Taxi.get_or_create('qwe123')
     @pos1 = Position.new(:latitude=>rand*100,:longitude=>rand*100,:taxi_id=>@taxi.id)
     @pos2 = Position.new(:latitude=>rand*100,:longitude=>rand*100,:taxi_id=>@taxi.id)
     @pos3 = Position.new(:latitude=>rand*100,:longitude=>rand*100,:taxi_id=>@taxi.id)
@@ -11,7 +11,7 @@ class PositionsControllerTest < ActionController::TestCase
     @pos2.save
     @pos3.save
 
-    @taxi2 = Taxi.get_or_create('24')
+    @taxi2 = Taxi.get_or_create('qwe124')
     @taxi2.positions.delete_all
     @taxi2.save
 

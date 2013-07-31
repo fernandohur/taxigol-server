@@ -2,14 +2,23 @@ require 'test_helper'
 
 class DriverTest < ActiveSupport::TestCase
 
-  test "the truth" do
-    assert true
-    assert Rails.env=='test'
+  #=========================
+  # helper methods
+  #=========================
+
+  # asserts that the attributes name, cedula, photo_url, 
+  # taxi_id and password match between the two taxi objects
+  def drivers_should_match(driver1, driver2)
+    assert driver1.name == driver2.name
+    assert driver1.cedula == driver2.cedula
+    assert driver1.photo_url == driver2.photo_url
+    assert driver1.taxi_id == driver2.taxi_id, "taxi_id was #{driver1.taxi_id} instead of #{driver2.taxi_id}"
+    assert driver1.password == driver2.password
   end
 
   setup do
 
-    @placa = '301ABC'
+    @placa = 'ABC301'
   	@taxi = Taxi.get_or_create(@placa)
 
     @driver = Driver.construct('my name','1020761351','password',@placa)
@@ -25,18 +34,18 @@ class DriverTest < ActiveSupport::TestCase
 
     name = 'pablo'
     cedula = '1020345612'
-    placa = '123abc'
+    placa = 'abc123'
     password = '1234'
     cel_number = '123345'
 
     driver = Driver.construct(name,cedula, password, placa, cel_number)
     driver.save!
 
-    assert driver.name == name
-    assert driver.cedula == cedula
-    assert driver.taxi_id == Taxi.get_or_create(placa).id
-    assert driver.password == password
-    assert driver.cel_number == cel_number
+    assert_equal driver.name, name
+    assert_equal driver.cedula, cedula
+    assert_equal driver.taxi_id, Taxi.get_or_create(placa).id
+    assert_equal driver.password, password
+    assert_equal driver.cel_number, cel_number
   end
 
   test 'creating driver with nil placa should raise error' do
@@ -61,7 +70,7 @@ class DriverTest < ActiveSupport::TestCase
   # test that authorizing a driver with non existing creds will return nil
   #
   test 'auth for non existing credentials should return nil driver' do
-    Driver.delete_all
+    
     driver = Driver.auth('a','b')
     assert driver == nil
 
@@ -101,17 +110,6 @@ class DriverTest < ActiveSupport::TestCase
   	@taxi.reload
   	assert_equal @taxi.current_driver_id, @driver.id
 
-  end
-
-  ##
-  #  asserts that the attributes name, cedula, photo_url, taxi_id and password match between the two taxi objects
-  ##
-  def drivers_should_match(driver1, driver2)
-    assert driver1.name == driver2.name
-    assert driver1.cedula == driver2.cedula
-    assert driver1.photo_url == driver2.photo_url
-    assert driver1.taxi_id == driver2.taxi_id, "taxi_id was #{driver1.taxi_id} instead of #{driver2.taxi_id}"
-    assert driver1.password == driver2.password
   end
 
   test 'Given 2 drivers have the same placa, the taxi should have two drivers ' do

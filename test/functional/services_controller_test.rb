@@ -84,11 +84,11 @@ class ServicesControllerTest < ActionController::TestCase
     @service3 = Service.construct("88","calle 132BIS # 19-43")
     @service3.save
 
-    @taxi = Taxi.get_or_create("123")
+    @taxi = Taxi.get_or_create("asd123")
     @pos = Position.new(:latitude=>123,:longitude=>456,:taxi_id=>@taxi.id)
     @pos.save
 
-    @taxi2 = Taxi.get_or_create("1243")
+    @taxi2 = Taxi.get_or_create("qwe143")
     @pos2 =  Position.new(:latitude=>123,:longitude=>456,:taxi_id=>@taxi2.id)
     @pos2.save
 
