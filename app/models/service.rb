@@ -43,6 +43,7 @@ class Service < ActiveRecord::Base
   ## Methods ##
   #############
 
+  # this method is executed after .save is called
   def after_save_callback
     sender = MessageSender.new
     sender.push_payload('',{:service_id=>self.id.to_s,:action=>'service_saved'})
@@ -50,7 +51,9 @@ class Service < ActiveRecord::Base
 
   #
   # Updates the Service's state
-  #state a string with the following posible values {:confirmado, :cancelado, :abandonado, :cumplido}. Any other value will raise an ArgumentError
+  # state a string with the following posible 
+  # values {:confirmado, :cancelado, :abandonado, :cumplido}. 
+  # Any other value will raise a StateChange
   #
   def update_state(state, taxi_id = nil, verification_code = nil)
     state = state.intern
@@ -69,33 +72,20 @@ class Service < ActiveRecord::Base
 
   end
 
+  # returns all the services with the given state
   def Service.get_by_state(state)
   	Service.where(" state = '#{state}'")
   end
 
+  # returns all the pending or confirmed services
+  # owned by a taxi with id #{taxi_id}
   def Service.get_pending_or_confirmed(taxi_id)
     Service.where(" taxi_id = #{taxi_id} OR state = '#{Service.pending}' ")
   end
 
-  def Service.get_states_count
-    ActiveRecord::Base.connection.execute('SELECT state,
-      COUNT(state) TotalCount
-      FROM Services
-      GROUP BY state
-      HAVING COUNT(state) > 0')
-  end
-
-  def Service.get_taxi_states_count (taxi_id)
-    st = ActiveRecord::Base.connection.prepare("SELECT state,
-         COUNT(state) TotalCount
-    FROM Services
-    WHERE taxi_id=?
-GROUP BY state
-  HAVING COUNT(state) > 0")
-    st.execute(taxi_id)
-  end
-
-  # Given that service is not nil
+  # GIVEN that service is not nil
+  # updates a service to state=confirm
+  # @raises StateChangeError
   def Service.update_confirm(service, taxi_id)
     raise StateChangeError , "Taxi service state was #{service.state}, cannot change to #{Service.confirmed}" unless service.is_pending
     raise StateChangeError, "Taxi service cannot be confirmed by more than one taxi. Was already confirmed by #{service.taxi_id}" if service.taxi_id!=nil
@@ -104,6 +94,9 @@ GROUP BY state
     service.save!
   end
 
+  # given that service is not nil, it will
+  # attempt to cancel it
+  # @raises StateChangeError
   def Service.update_cancel(service)
     raise StateChangeError, "Taxi service with id #{service.id} was already canceled " if service.is_canceled
     raise StateChangeError, "Taxi service cannot be cancelled if completed" if service.is_complete
@@ -111,6 +104,7 @@ GROUP BY state
     service.save!
   end
 
+  # given service is not nil, will attempt to abandon it
   def Service.update_abandon(service, taxi_id)
     raise StateChangeError, "Service.taxi_id was #{service.taxi_id} but taxi_id was #{taxi_id}" if service.taxi_id != taxi_id.to_i
     raise StateChangeError, "Service with id #{service.id} had state #{service.state}" unless service.is_confirmed
@@ -122,6 +116,8 @@ GROUP BY state
     end
   end
 
+  # given service is no nil, will attempt to update it's state
+  # to cumplido
   def Service.update_cumplido(service, taxi_id, verification_code)
     raise StateChangeError, "service with id #{service.id} has verification code #{service.verification_code} but verification code was #{verification_code}" if service.verification_code != verification_code
     raise StateChangeError, "service with id #{service.id} has taxi_id of #{service.taxi_id} but taxi_id param was #{taxi_id}" if service.taxi_id != taxi_id.to_i
@@ -188,7 +184,7 @@ GROUP BY state
   # This exceptions is raised whenever there is an illegal state change.
   # Allowed changes are as follows:
   # 1. pending
-  # 2. confirmado
+  # 2. confirmado || cancelled
   # 3. cancelled || abandoned || complete
   #
   class StateChangeError < ArgumentError
