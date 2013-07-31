@@ -13,3 +13,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore extra files
+taxigol.sublime-project
+taxigol.sublime-workspace
+todos
