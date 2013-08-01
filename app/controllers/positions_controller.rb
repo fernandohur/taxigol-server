@@ -21,6 +21,7 @@ class PositionsController < ApplicationController
     end
   end
 
+  # returns the last position registered by a taxi
   # GET /positions/get_last
   def get_last
     taxi_id = params[:taxi_id]
@@ -49,20 +50,6 @@ class PositionsController < ApplicationController
     end
   end
 
-  # PUT /positions/1
-  # PUT /positions/1.json
-  def update
-    @position = Position.find(params[:id])
-
-    respond_to do |format|
-      if @position.update_attributes(params[:position])
-        format.json { head :no_content }
-      else
-        format.json { render json: @position.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /positions/1
   # DELETE /positions/1.json
   def destroy
@@ -73,7 +60,7 @@ class PositionsController < ApplicationController
     end
   end
 
-  #se hace de los datos
+  # deletes all positions
   # PUT /positions/reset.json
   def reset
     num_deleted = Position.delete_all
