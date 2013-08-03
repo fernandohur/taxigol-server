@@ -14,7 +14,7 @@ class Service < ActiveRecord::Base
   ################
   ## Attributes ##
   ################
-  attr_accessible :taxi_id, :verification_code, :address, :latitude, :longitude,:state,:tip
+  attr_accessible :taxi_id, :verification_code, :address, :service_type, :latitude, :longitude,:state,:tip
   belongs_to :taxi
 
 
@@ -27,10 +27,11 @@ class Service < ActiveRecord::Base
   #
   # This method should be called to construct the Service instead of calling Service.new
   #
-  def Service.construct(verification_code, address, latitude=nil, longitude=nil, tip='')
+  def Service.construct(verification_code, address, service_type, latitude=nil, longitude=nil, tip='')
     s = Service.new(
     	:verification_code=>verification_code,
     	:address => address,
+      :service_type => service_type,
     	:latitude => latitude,
     	:longitude => longitude,
     	:state => Service.pending,

@@ -29,14 +29,16 @@ class ServiceTest < ActiveSupport::TestCase
   def create_service()
     address = "address"+rand.to_s
     verification_code = (100*rand).to_i.to_s
+    service_type = "normal"
     latitude = rand
     longitude = rand
     tip = rand.to_s
-    service = Service.construct(verification_code,address, latitude, longitude, tip)
+    service = Service.construct(verification_code,address, service_type, latitude, longitude, tip)
     
     assert_pending service
     assert_equal service.address, address
     assert_equal service.verification_code, verification_code
+    assert_equal service.service_type, service_type
     assert_equal service.latitude,latitude
     assert_equal service.longitude,longitude
     assert_equal service.tip,tip
@@ -83,6 +85,7 @@ class ServiceTest < ActiveSupport::TestCase
 
     assert s.verification_code != nil
     assert s.address !=nil
+    assert s.service_type != nil
     assert s.taxi == nil
     assert s.taxi_id == nil
     assert s.id != nil
@@ -159,7 +162,7 @@ class ServiceTest < ActiveSupport::TestCase
 
   test 'To complete Service then state must be :confirmado and verification code must match and taxi_id must match' do
 
-    s = Service.construct("asd","asd")
+    s = Service.construct("asd","asd", "normal")
     s.save
 
     begin
@@ -177,13 +180,15 @@ class ServiceTest < ActiveSupport::TestCase
   test 'test new with pos should assign attrs correctly' do
     verification_code = '98'
     address = 'calle 132 a # 19-43'
+    service_type = "normal"
     latitude = 12.89
     longitude = 12.23
-    s = Service.construct(verification_code,address, latitude, longitude)
+    s = Service.construct(verification_code,address, service_type, latitude, longitude)
     s.save
 
     assert s.verification_code==verification_code
     assert s.address == address
+    assert s.service_type == service_type
     assert s.latitude == latitude
     assert s.longitude == longitude
     assert_equal s.tip,''
@@ -194,14 +199,16 @@ class ServiceTest < ActiveSupport::TestCase
   test 'construct Service with latitude,longitude & tip should assign attrs correctly' do
     verification_code = '98'
     address = 'calle 132 a # 19-43'
+    service_type = "normal"
     latitude = 12.89
     longitude = 12.23
     tip = '50000'
-    s = Service.construct(verification_code,address, latitude, longitude, tip)
+    s = Service.construct(verification_code,address, service_type, latitude, longitude, tip)
     s.save
 
     assert s.verification_code==verification_code
     assert s.address == address
+    assert s.service_type == service_type
     assert s.latitude == latitude
     assert s.longitude == longitude
     assert s.tip == tip
@@ -213,13 +220,13 @@ class ServiceTest < ActiveSupport::TestCase
 
   test ' get_pending_or_confirmed should return all services with state confirmed by taxi or pending' do
 
-    s1 = Service.construct('12','address1',12.5,5.12)
-    s2 = Service.construct('12','address1',12.5,5.12)
-    s3 = Service.construct('12','address1',12.5,5.12)
-    s4 = Service.construct('12','address1',12.5,5.12)
-    s5 = Service.construct('12','address1',12.5,5.12)
-    s6 = Service.construct('12','address2',12.5,23)
-    s7 = Service.construct('12','asd',123,432)
+    s1 = Service.construct('12','address1','normal',12.5,5.12)
+    s2 = Service.construct('12','address1','normal',12.5,5.12)
+    s3 = Service.construct('12','address1','normal',12.5,5.12)
+    s4 = Service.construct('12','address1','normal',12.5,5.12)
+    s5 = Service.construct('12','address1','normal',12.5,5.12)
+    s6 = Service.construct('12','address2','normal',12.5,23)
+    s7 = Service.construct('12','asd','normal',123,432)
 
     services = [s1,s2,s3,s4,s5,s6,s7]
     services.each do |s| s.save! end

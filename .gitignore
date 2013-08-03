@@ -18,3 +18,7 @@
 taxigol.sublime-project
 taxigol.sublime-workspace
 todos
+
+.project
+.DS_Store
+.idea
