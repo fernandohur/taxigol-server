@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619211522) do
+ActiveRecord::Schema.define(:version => 20130802211047) do
 
   create_table "drivers", :force => true do |t|
     t.string   "cedula",     :null => false
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20130619211522) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.string   "tip"
+    t.string   "type"
   end
 
   create_table "taxis", :force => true do |t|
