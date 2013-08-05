@@ -52,11 +52,12 @@ class ServicesController < ApplicationController
     verification_code = params[:verification_code]
     address = params[:address]
     tip = params[:tip]
+    service_type = params[:service_type]
 
     if tip
-    	@service = Service.construct(verification_code, address, latitude,longitude, tip)
+    	@service = Service.construct(verification_code, address, service_type, latitude,longitude, tip)
     else
-    	@service = Service.construct(verification_code,address,latitude,longitude)
+    	@service = Service.construct(verification_code,address, service_type, latitude,longitude)
     end
 
     respond_to do |format|

@@ -11,13 +11,14 @@ class ServicesControllerTest < ActionController::TestCase
     assert_equal service_json["taxi_id"], service.taxi_id
     assert_equal service_json["address"], service.address
     assert_equal service_json["verification_code"], service.verification_code
+    assert_equal service_json["service_type"], service.service_type
   end
 
   # Creates a service with a random address and a random verification code
   # Use Service.last to access the created service
   def create_service
     assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>rand.to_s, :verification_code=>(rand*100).to_i.to_s,:latitude=>rand, :longitude=>rand}
+      post :create, {:format=>:json, :address=>rand.to_s, :verification_code=>(rand*100).to_i.to_s, :service_type =>'normal', :latitude=>rand, :longitude=>rand}
     end
     return Service.last
   end
@@ -77,11 +78,11 @@ class ServicesControllerTest < ActionController::TestCase
   # test setup method
   setup do
 
-    @service1 = Service.construct("12","calle 132 a # 19-43")
+    @service1 = Service.construct("12","calle 132 a # 19-43", "normal")
     @service1.save
-    @service2 = Service.construct("19","kra 132 a # 19-43")
+    @service2 = Service.construct("19","kra 132 a # 19-43", "aeropuerto")
     @service2.save
-    @service3 = Service.construct("88","calle 132BIS # 19-43")
+    @service3 = Service.construct("88","calle 132BIS # 19-43", "normal")
     @service3.save
 
     @taxi = Taxi.get_or_create("asd123")
@@ -263,14 +264,16 @@ class ServicesControllerTest < ActionController::TestCase
   test "post to create with latitude and longitude should init those attrs" do
     address = 'calle 132 a # 19-43'
     verification_code = '12'
+    service_type = 'normal'
     latitude = 12.32
     longitude = 13.45
     assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code,:latitude=>latitude,:longitude=>longitude}
+      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code, :service_type=>service_type, :latitude=>latitude,:longitude=>longitude}
     end
     s = Service.last
     assert s.address == address
     assert s.verification_code == verification_code
+    assert s.service_type == service_type
     assert s.latitude == latitude
     assert s.longitude == longitude
   end
@@ -278,12 +281,14 @@ class ServicesControllerTest < ActionController::TestCase
   test 'post with no lat should not init lat nor lon' do
     address = 'calle 132 a # 19-43'
     verification_code = '12'
+    service_type = 'aeropuerto'
     assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code}
+      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code, :service_type=>service_type}
     end
     s = Service.last
     assert s.address == address
     assert s.verification_code == verification_code
+    assert s.service_type == service_type
     assert s.longitude == nil, "longitude shold be nil but was #{s.longitude}"
     assert s.latitude == nil
     assert_equal s.tip, ''
@@ -292,6 +297,7 @@ class ServicesControllerTest < ActionController::TestCase
   test 'post to create should init all vars' do
   	address = 'calle 132 a # 19-43'
   	verification_code = '12'
+    service_type = 'normal'
   	latitude = 12.995
   	longitude = -92.352
   	tip = '50.000'
@@ -299,6 +305,7 @@ class ServicesControllerTest < ActionController::TestCase
   		:format => :json,
   		:address => address,
   		:verification_code => verification_code,
+      :service_type => service_type,
   		:latitude => latitude,
   		:longitude => longitude,
   		:tip => tip }
