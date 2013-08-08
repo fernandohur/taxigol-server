@@ -17,9 +17,6 @@ class Service < ActiveRecord::Base
   attr_accessible :taxi_id, :verification_code, :address, :service_type, :latitude, :longitude,:state,:tip
   belongs_to :taxi
 
-
-
-
   ##################
   ## Constructors ##
   ##################
