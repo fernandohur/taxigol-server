@@ -3,10 +3,14 @@
 #
 class Driver < ActiveRecord::Base
 
-  attr_accessible :cedula, :name, :photo_url, :taxi_id, :password, :cel_number
+  attr_accessible :cedula, :name, :taxi_id, :password, :cel_number, :image
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
+
+  has_attached_file :image, styles: {
+      small: '125x125>'
+  }
 
   #
   # Creates a new driver

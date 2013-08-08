@@ -12,6 +12,15 @@ class DriversController < ApplicationController
     end
   end
 
+  def new
+    @driver = Driver.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @friend }
+    end
+  end
+
   # GET /drivers/1
   # GET /drivers/1.json
   def show
@@ -26,13 +35,9 @@ class DriversController < ApplicationController
   # POST /drivers
   # POST /drivers.json
   def create
-
-    placa = params[:placa]
-    cedula = params[:cedula]
-    password = params[:password]
-    name = params[:name]
-		cel_number = params[:cel_number] 		
-		@driver = Driver.construct(name, cedula, password, placa,cel_number)
+    taxi = Taxi.get_or_create(params[:placa])
+    @driver = Driver.new(params[:driver])
+    @driver.taxi_id=taxi.id
 
     respond_to do |format|
       if @driver.save
@@ -95,4 +100,17 @@ class DriversController < ApplicationController
     num_deleted = Driver.delete_all
     render_as_json num_deleted
   end
+
+  # DELETE /drivers/1
+  # DELETE /drivers/1.json
+  def destroy
+    @driver = Driver.find(params[:id])
+    @friend.destroy
+
+    respond_to do |format|
+      format.html { redirect_to friends_url }
+      format.json { head :no_content }
+    end
+  end
+
 end

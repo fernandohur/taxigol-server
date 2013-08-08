@@ -34,4 +34,8 @@ TaxigolServer::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  Paperclip::Attachment.default_options.merge!({
+                                                   :path => "tmp/test/uploads/:style/:filename"
+                                               })
 end

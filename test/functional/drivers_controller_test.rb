@@ -28,12 +28,14 @@ class DriversControllerTest < ActionController::TestCase
   test 'creating a driver should increase driver count and result should be a driver' do
 
     cedula = '102020394875'
+    celular = '3008734028'
     password = 'mypwd'
     name = 'richard the third'
     placa = 'ABC987'
+    image = fixture_file_upload 'sample_file.png'
 
     assert_difference 'Driver.all.size',1 do
-      post :create, {:format=>:json, :cedula=>cedula, :password=>password, :name=>name, :placa=>placa}
+      post :create, {:format=>:json, :driver=> {:name=>name, :cedula=>cedula, :cel_number=>celular, :password=>password, :image=>image}, :placa=>placa}
       resp = @response.body
       json = MultiJson.load(resp)
       assert_json_matches_driver(json, Driver.last)
@@ -97,6 +99,7 @@ class DriversControllerTest < ActionController::TestCase
 
 
    end
+
 
 
 end
