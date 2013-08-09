@@ -32,6 +32,11 @@ class DriversController < ApplicationController
     end
   end
 
+  # GET /users/1/edit
+  def edit
+    @driver = Driver.find(params[:id])
+  end
+
   # POST /drivers
   # POST /drivers.json
   def create
@@ -105,10 +110,10 @@ class DriversController < ApplicationController
   # DELETE /drivers/1.json
   def destroy
     @driver = Driver.find(params[:id])
-    @friend.destroy
+    @driver.destroy
 
     respond_to do |format|
-      format.html { redirect_to friends_url }
+      format.html { redirect_to drivers_url }
       format.json { head :no_content }
     end
   end
