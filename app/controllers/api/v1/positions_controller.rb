@@ -12,6 +12,8 @@ module Api
 			# GET /positions/:id
 			def show
 				respond_with Position.find(params[:id])
+			rescue ActiveRecord::RecordNotFound
+				respond_with nil
 			end
 
 			# POST /positions
