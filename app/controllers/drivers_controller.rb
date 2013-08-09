@@ -40,9 +40,7 @@ class DriversController < ApplicationController
   # POST /drivers
   # POST /drivers.json
   def create
-    taxi = Taxi.get_or_create(params[:placa])
-    @driver = Driver.new(params[:driver])
-    @driver.taxi_id=taxi.id
+    @driver = Driver.construct(params[:driver], params[:placa])
 
     respond_to do |format|
       if @driver.save
