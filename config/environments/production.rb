@@ -68,9 +68,9 @@ TaxigolServer::Application.configure do
   config.paperclip_defaults = {
       :storage => :s3,
       :s3_credentials => {
-          :bucket => ENV['DriversImage'],
-          :access_key_id => ENV['AKIAJLKBXMT26UD7X6SA'],
-          :secret_access_key => ENV['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']
+          :bucket => ENV['AWS_BUCKET'],
+          :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+          :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
       }
   }
 
