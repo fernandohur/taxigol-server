@@ -100,5 +100,8 @@ class ActiveSupport::TestCase
     assert !id_match || !taxi_id_match || !lat_match || !lon_match
   end
 
+  def sample_file(filename = "sample_file.png")
+    File.new("test/fixtures/#{filename}")
+  end
 
 end

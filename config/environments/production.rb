@@ -64,4 +64,14 @@ TaxigolServer::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  config.paperclip_defaults = {
+      :storage => :s3,
+      :s3_credentials => {
+          :bucket => ENV['DriversImage'],
+          :access_key_id => ENV['AKIAJLKBXMT26UD7X6SA'],
+          :secret_access_key => ENV['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']
+      }
+  }
+
 end

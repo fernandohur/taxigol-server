@@ -3,10 +3,14 @@
 #
 class Driver < ActiveRecord::Base
 
-  attr_accessible :cedula, :name, :photo_url, :taxi_id, :password, :cel_number
+  attr_accessible :cedula, :name, :taxi_id, :password, :cel_number, :image
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
+
+  has_attached_file :image, styles: {
+      small: '125x125>'
+  }
 
   #
   # Creates a new driver
@@ -50,6 +54,12 @@ class Driver < ActiveRecord::Base
   #
   def Driver.get_by_taxi_id(taxi_id)
 		Driver.where("taxi_id = #{taxi_id}")
+  end
+
+  def as_json(options={})
+    rpta = super
+    rpta[:image_url] = image.url(:small)
+    rpta
   end
 
 

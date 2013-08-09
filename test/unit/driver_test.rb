@@ -6,12 +6,11 @@ class DriverTest < ActiveSupport::TestCase
   # helper methods
   #=========================
 
-  # asserts that the attributes name, cedula, photo_url, 
+  # asserts that the attributes name, cedula
   # taxi_id and password match between the two taxi objects
   def drivers_should_match(driver1, driver2)
     assert driver1.name == driver2.name
     assert driver1.cedula == driver2.cedula
-    assert driver1.photo_url == driver2.photo_url
     assert driver1.taxi_id == driver2.taxi_id, "taxi_id was #{driver1.taxi_id} instead of #{driver2.taxi_id}"
     assert driver1.password == driver2.password
   end
