@@ -56,5 +56,11 @@ class Driver < ActiveRecord::Base
 		Driver.where("taxi_id = #{taxi_id}")
   end
 
+  def as_json(options={})
+    rpta = super
+    rpta[:image_url] = image.url(:small)
+    rpta
+  end
+
 
 end
