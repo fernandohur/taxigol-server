@@ -16,7 +16,21 @@ class FollowTaxiTest < ActionDispatch::IntegrationTest
 		Taxi.delete_all
 		Driver.delete_all
 
-		@driver = Driver.construct('Billy Bob Turdington','10201020', 'password', 'asd123')
+    cedula = '10201020'
+    celular = '3008734028'
+    password = 'password'
+    name = 'Billy Bob Turdington'
+    extend ActionDispatch::TestProcess
+    image = fixture_file_upload 'sample_file.png'
+
+    driverHash = Hash.new
+    driverHash['name'] =  name
+    driverHash['cedula'] = cedula
+    driverHash['image'] = image
+    driverHash['cel_number'] = celular
+    driverHash['password'] = password
+
+    @driver = Driver.construct(driverHash, 'asd123')
 		@driver.save!
 
 	end

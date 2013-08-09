@@ -14,16 +14,14 @@ class Driver < ActiveRecord::Base
 
   #
   # Creates a new driver
-  # @param name: a string representing the name of the driver
-  # @param cedula: a string representing the cedula/id of the driver
-  # @param password: a string for the password
+  # @param driver: a hash representing the driver model
   # @param placa: a string that must match 'XYZ123'
-  # @param cel_number: a string representing the driver's phone number
   #
-  def Driver.construct(name,cedula, password, placa, cel_number="")
+  def Driver.construct(driver, placa)
     taxi = Taxi.get_or_create(placa)
-    driver = Driver.new(:name=>name,:cedula=>cedula,:taxi_id=>taxi.id, :password=>password, :cel_number => cel_number)
-    
+    driver = Driver.new(driver)
+    driver.taxi_id=taxi.id
+
     return driver
   end
 

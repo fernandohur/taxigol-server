@@ -20,7 +20,22 @@ class DriverTest < ActiveSupport::TestCase
     @placa = 'ABC301'
   	@taxi = Taxi.get_or_create(@placa)
 
-    @driver = Driver.construct('my name','1020761351','password',@placa)
+    cedula = '102020394875'
+    celular = '3008734028'
+    password = 'mypwd'
+    name = 'richard the third'
+    placa = 'ABC987'
+    extend ActionDispatch::TestProcess
+    image = fixture_file_upload 'sample_file.png'
+
+    driverHash = Hash.new
+    driverHash['name'] =  name
+    driverHash['cedula'] = cedula
+    driverHash['image'] = image
+    driverHash['cel_number'] = celular
+    driverHash['password'] = password
+
+    @driver = Driver.construct(driverHash, @placa)
     @driver.save
     @driver.reload
 
@@ -36,8 +51,18 @@ class DriverTest < ActiveSupport::TestCase
     placa = 'abc123'
     password = '1234'
     cel_number = '123345'
+    extend ActionDispatch::TestProcess
+    image = fixture_file_upload 'sample_file.png'
 
-    driver = Driver.construct(name,cedula, password, placa, cel_number)
+    driverHash = Hash.new
+    driverHash['name'] =  name
+    driverHash['cedula'] = cedula
+    driverHash['image'] = image
+    driverHash['cel_number'] = cel_number
+    driverHash['password'] = password
+
+    driver = Driver.construct(driverHash, placa)
+
     driver.save!
 
     assert_equal driver.name, name
@@ -53,8 +78,16 @@ class DriverTest < ActiveSupport::TestCase
 			name = 'pablo'
 	    cedula = '1020345612'
 	    password = '1234'
+      extend ActionDispatch::TestProcess
+      image = fixture_file_upload 'sample_file.png'
 
-	    driver = Driver.construct(name,cedula, password, nil)
+      driverHash = Hash.new
+      driverHash['name'] =  name
+      driverHash['cedula'] = cedula
+      driverHash['image'] = image
+      driverHash['password'] = password
+
+      driver = Driver.construct(driverHash, nil)
 	    driver.save!
 
 	    assert driver.name == name
@@ -118,7 +151,17 @@ class DriverTest < ActiveSupport::TestCase
     assert Taxi.get_or_create(@placa).drivers.include? @driver
 
     #now we create a second driver but bear in mind that they share the same @placa
-    driver2 = Driver.construct('roberto', '1020362', '1234', @placa)
+    extend ActionDispatch::TestProcess
+    image = fixture_file_upload 'sample_file.png'
+
+    driverHash = Hash.new
+    driverHash['name'] =  'robert'
+    driverHash['cedula'] = '1020362'
+    driverHash['image'] = image
+    driverHash['cel_number'] = '300832422'
+    driverHash['password'] = '1234'
+
+    driver2 = Driver.construct(driverHash, @placa)
     driver2.save!
 
     #now we test that the taxi now has a new driver            .
@@ -131,15 +174,17 @@ class DriverTest < ActiveSupport::TestCase
 
   test 'registering two drivers with same cedula should return exception' do
 
+    driverHash = Hash.new
+    driverHash['name'] =  'rob'
+    driverHash['cedula'] = @driver.cedula
+    driverHash['password'] = 'mypass'
+
     assert_raises ActiveRecord::RecordInvalid do
-      d = Driver.construct('rob', @driver.cedula, 'mypass','abc123')
+      d = Driver.construct(driverHash, 'abc123')
       d.save!
     end
 
   end
-
-
-
 
 
 end
