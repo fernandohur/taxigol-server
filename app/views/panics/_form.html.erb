@@ -1,0 +1,29 @@
+<%= form_for(@panic) do |f| %>
+  <% if @panic.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@panic.errors.count, "error") %> prohibited this panic from being saved:</h2>
+
+      <ul>
+      <% @panic.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :latitude %><br />
+    <%= f.text_field :latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :longitude %><br />
+    <%= f.text_field :longitude %>
+  </div>
+  <div class="field">
+    <%= f.label :taxi_id %><br />
+    <%= f.number_field :taxi_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

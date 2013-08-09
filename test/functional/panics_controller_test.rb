@@ -3,6 +3,7 @@ require 'test_helper'
 class PanicsControllerTest < ActionController::TestCase
 
 
+<<<<<<< HEAD
   test "create panic with no taxi should raise NoTaxiError" do
 
     Taxi.delete_all
@@ -19,5 +20,7 @@ class PanicsControllerTest < ActionController::TestCase
     should_contain_error_message(@response, NoPositionError)
 
   end
+=======
+>>>>>>> ceduquey
 
 end

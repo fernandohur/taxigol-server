@@ -157,9 +157,15 @@ The default directory structure of a generated Ruby on Rails application:
 
   |-- app
   |   |-- assets
+<<<<<<< HEAD
   |       |-- images
   |       |-- javascripts
   |       `-- stylesheets
+=======
+  |   |   |-- images
+  |   |   |-- javascripts
+  |   |   `-- stylesheets
+>>>>>>> ceduquey
   |   |-- controllers
   |   |-- helpers
   |   |-- mailers
@@ -173,6 +179,10 @@ The default directory structure of a generated Ruby on Rails application:
   |-- db
   |-- doc
   |-- lib
+<<<<<<< HEAD
+=======
+  |   |-- assets
+>>>>>>> ceduquey
   |   `-- tasks
   |-- log
   |-- public
@@ -184,6 +194,7 @@ The default directory structure of a generated Ruby on Rails application:
   |   |-- performance
   |   `-- unit
   |-- tmp
+<<<<<<< HEAD
   |   |-- cache
   |   |-- pids
   |   |-- sessions
@@ -191,6 +202,14 @@ The default directory structure of a generated Ruby on Rails application:
   `-- vendor
       |-- assets
           `-- stylesheets
+=======
+  |   `-- cache
+  |       `-- assets
+  `-- vendor
+      |-- assets
+      |   |-- javascripts
+      |   `-- stylesheets
+>>>>>>> ceduquey
       `-- plugins
 
 app

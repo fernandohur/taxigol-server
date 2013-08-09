@@ -1,5 +1,8 @@
 class PanicsController < ApplicationController
+<<<<<<< HEAD
 
+=======
+>>>>>>> ceduquey
   # GET /panics
   # GET /panics.json
   def index
@@ -40,6 +43,7 @@ class PanicsController < ApplicationController
 
   # POST /panics
   # POST /panics.json
+<<<<<<< HEAD
   # Creates a new Panic
   # requires that the Panic's taxi_id refer to a real Taxi and that Taxi must have at least one position
   # <b>params</b> :taxi_id as integer
@@ -58,6 +62,20 @@ class PanicsController < ApplicationController
 
   rescue Exception => e
     render_error(e)
+=======
+  def create
+    @panic = Panic.new(params[:panic])
+
+    respond_to do |format|
+      if @panic.save
+        format.html { redirect_to @panic, notice: 'Panic was successfully created.' }
+        format.json { render json: @panic, status: :created, location: @panic }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @panic.errors, status: :unprocessable_entity }
+      end
+    end
+>>>>>>> ceduquey
   end
 
   # PUT /panics/1
@@ -67,11 +85,19 @@ class PanicsController < ApplicationController
 
     respond_to do |format|
       if @panic.update_attributes(params[:panic])
+<<<<<<< HEAD
         format.html { redirect_to @panic, notice: 'panic  was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
         format.json { render json: @Panic.errors, status: :unprocessable_entity }
+=======
+        format.html { redirect_to @panic, notice: 'Panic was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @panic.errors, status: :unprocessable_entity }
+>>>>>>> ceduquey
       end
     end
   end
@@ -87,6 +113,7 @@ class PanicsController < ApplicationController
       format.json { head :no_content }
     end
   end
+<<<<<<< HEAD
 
   def reset
     x = Panic.delete_all
@@ -94,4 +121,6 @@ class PanicsController < ApplicationController
       format.json {render json: x}
     end
   end
+=======
+>>>>>>> ceduquey
 end

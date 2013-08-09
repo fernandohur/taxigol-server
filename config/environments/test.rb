@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 TaxisTest::Application.configure do
+=======
+TaxigolServer::Application.configure do
+>>>>>>> ceduquey
   # Settings specified here will take precedence over those in config/application.rb
 
   # The test environment is used exclusively to run your application's
@@ -34,4 +38,11 @@ TaxisTest::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+<<<<<<< HEAD
+=======
+
+  Paperclip::Attachment.default_options.merge!({
+                                                   :path => "tmp/test/uploads/:style/:filename"
+                                               })
+>>>>>>> ceduquey
 end

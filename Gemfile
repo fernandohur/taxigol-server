@@ -1,23 +1,39 @@
 source 'https://rubygems.org'
 
+<<<<<<< HEAD
 gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #gem 'sqlite3'
+=======
+ruby '1.9.3'
+
+gem 'rails', '3.2.13'
+
+>>>>>>> ceduquey
 
 group :development, :test do
   gem 'sqlite3'
 end
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ceduquey
 group :production do
   gem 'pg'
 end
 
 gem 'httparty'
+<<<<<<< HEAD
 gem 'gruff'
 gem 'rmagick'
+=======
+gem 'paperclip'
+gem 'aws-sdk'
+>>>>>>> ceduquey
 
 
 # Gems used only for assets and not required
@@ -26,10 +42,16 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 
+<<<<<<< HEAD
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+=======
+  gem 'therubyracer', :platforms => :ruby
+	gem 'uglifier', '>= 1.0.3'
+
+>>>>>>> ceduquey
 end
 
 gem 'jquery-rails'

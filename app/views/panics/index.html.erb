@@ -1,0 +1,27 @@
+<h1>Listing panics</h1>
+
+<table>
+  <tr>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th>Taxi</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @panics.each do |panic| %>
+  <tr>
+    <td><%= panic.latitude %></td>
+    <td><%= panic.longitude %></td>
+    <td><%= panic.taxi_id %></td>
+    <td><%= link_to 'Show', panic %></td>
+    <td><%= link_to 'Edit', edit_panic_path(panic) %></td>
+    <td><%= link_to 'Destroy', panic, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Panic', new_panic_path %>

@@ -80,11 +80,28 @@ class TaxisController < ApplicationController
 
   #POST /taxis/auth.json
   def auth
+<<<<<<< HEAD
     @taxi = Taxi.auth(params[:installation_id])
+=======
+    @taxi = Taxi.get_or_create(params[:installation_id])
+>>>>>>> ceduquey
     respond_to do |format|
       format.json {render json: @taxi}
     end
   end
 
+<<<<<<< HEAD
+=======
+  # GET /taxis/last/1.json
+  def last_taxi_position
+    taxi = Taxi.find(params[:id])
+    position = taxi.get_last_position
+    respond_to do |format|
+      format.html
+      format.json{render json: position}
+    end
+  end
+
+>>>>>>> ceduquey
 end
 

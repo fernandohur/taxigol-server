@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Latitude:</b>
+  <%= @panic.latitude %>
+</p>
+
+<p>
+  <b>Longitude:</b>
+  <%= @panic.longitude %>
+</p>
+
+<p>
+  <b>Taxi:</b>
+  <%= @panic.taxi_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_panic_path(@panic) %> |
+<%= link_to 'Back', panics_path %>

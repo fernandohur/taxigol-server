@@ -4,4 +4,8 @@
 
 require File.expand_path('../config/application', __FILE__)
 
+<<<<<<< HEAD
 TaxisTest::Application.load_tasks
+=======
+TaxigolServer::Application.load_tasks
+>>>>>>> ceduquey

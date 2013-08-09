@@ -6,9 +6,15 @@ class MapObjectsController < ApplicationController
     category = params[:category]
 
     if category!=nil
+<<<<<<< HEAD
       @map_objects = MapObject.get_by_category(category)
     else
       @map_objects = MapObject.all
+=======
+      @map_objects = MapObject.get_unexpired_by_category(category)
+    else
+      @map_objects = MapObject.get_unexpired
+>>>>>>> ceduquey
     end
 
     respond_to do |format|
@@ -47,7 +53,17 @@ class MapObjectsController < ApplicationController
   # POST /map_objects
   # POST /map_objects.json
   def create
+<<<<<<< HEAD
     @map_object = MapObject.construct(params[:category],params[:latitude],params[:longitude],params[:description])
+=======
+
+    expires_in_seconds = params[:expires_in].to_i
+    if expires_in_seconds
+      @map_object = MapObject.construct(params[:category],params[:latitude],params[:longitude], expires_in_seconds)
+    else
+      @map_object = MapObject.construct(params[:category],params[:latitude],params[:longitude])
+    end
+>>>>>>> ceduquey
 
     respond_to do |format|
       if @map_object.save
@@ -87,4 +103,25 @@ class MapObjectsController < ApplicationController
       format.json { head :no_content }
     end
   end
+<<<<<<< HEAD
+=======
+
+  # PUT /map_objects/reset.json
+  def reset
+    num_deleted = MapObject.delete_all
+    respond_to do |format|
+      format.json {render json: num_deleted}
+    end
+  end
+
+  # POST /map_objects/expire.json
+  def expire
+    map_object_id = params[:id]
+    MapObject.find(map_object_id).expire
+    render_as_json 1
+  rescue MapObject::ExpireError => e
+    render_error e
+  end
+
+>>>>>>> ceduquey
 end

@@ -1,10 +1,34 @@
+<<<<<<< HEAD
 TaxisTest::Application.routes.draw do
   resources :map_objects
+=======
+TaxigolServer::Application.routes.draw do
+
+  resources :drivers do
+    collection do
+      get 'get_drivers'
+      post 'auth'
+      post 'reset'
+    end
+  end
+
+
+  resources :map_objects do
+    collection do
+      post 'reset'
+      post 'expire'
+    end
+  end
+>>>>>>> ceduquey
 
 
   resources :positions do
     collection do
       post 'reset'
+<<<<<<< HEAD
+=======
+      get 'get_last'
+>>>>>>> ceduquey
     end
   end
 
@@ -16,6 +40,15 @@ TaxisTest::Application.routes.draw do
     end
   end
 
+<<<<<<< HEAD
+=======
+  resources :users do
+    collection do
+      post 'reset'
+    end
+  end
+
+>>>>>>> ceduquey
 
   resources :panics do
     collection do
@@ -28,11 +61,22 @@ TaxisTest::Application.routes.draw do
     collection do
       post 'reset'
       get 'pie_graph'
+<<<<<<< HEAD
     end
   end
 
 
   match "/request" => "services#confirm", :as => :post
+=======
+      get 'bar_graph'
+      get 'pie_graph_for_taxi'
+    end
+  end
+
+  match '/broadcast' => 'broadcaster#broadcast', via: :post
+
+
+>>>>>>> ceduquey
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

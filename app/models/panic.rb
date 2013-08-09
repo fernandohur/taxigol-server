@@ -1,4 +1,5 @@
 class Panic < ActiveRecord::Base
+<<<<<<< HEAD
   attr_accessible :position_id
   belongs_to :position
 
@@ -15,6 +16,12 @@ class Panic < ActiveRecord::Base
 
   def get_taxi
     position.taxi
+=======
+  attr_accessible :latitude, :longitude, :taxi_id
+
+  def Panic.construct(latitude, longitude, taxi_id)
+		return Panic.new(:latitude=>latitude, :longitude=>longitude, :taxi_id=>taxi_id)
+>>>>>>> ceduquey
   end
 
 end

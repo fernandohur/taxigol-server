@@ -1,6 +1,13 @@
 class PositionsController < ApplicationController
+<<<<<<< HEAD
   # GET /positions
   # GET /positions.json
+=======
+
+  # @route /positions
+  # @method GET
+  # @return
+>>>>>>> ceduquey
   def index
     @positions = Position.all
 
@@ -19,6 +26,21 @@ class PositionsController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
+=======
+  # returns the last position registered by a taxi
+  # GET /positions/get_last
+  def get_last
+    taxi_id = params[:taxi_id]
+    taxi = Taxi.find(taxi_id)
+    last_pos = taxi.get_last_position
+    render_as_json last_pos
+  rescue NoPositionError => e
+    render_error(e)
+  end
+
+
+>>>>>>> ceduquey
   # POST /positions
   # POST /positions.json
   def create
@@ -36,6 +58,7 @@ class PositionsController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
   # PUT /positions/1
   # PUT /positions/1.json
   def update
@@ -50,6 +73,8 @@ class PositionsController < ApplicationController
     end
   end
 
+=======
+>>>>>>> ceduquey
   # DELETE /positions/1
   # DELETE /positions/1.json
   def destroy
@@ -60,7 +85,11 @@ class PositionsController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
   #se hace de los datos
+=======
+  # deletes all positions
+>>>>>>> ceduquey
   # PUT /positions/reset.json
   def reset
     num_deleted = Position.delete_all
@@ -69,4 +98,8 @@ class PositionsController < ApplicationController
     end
 
   end
+<<<<<<< HEAD
+=======
+
+>>>>>>> ceduquey
 end
