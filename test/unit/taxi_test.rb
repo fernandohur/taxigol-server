@@ -88,11 +88,49 @@ class TaxiTest < ActiveSupport::TestCase
 
     taxi = Taxi.get_or_create(plate)
     taxi.save
-    d1 = Driver.construct("name",1, "password", plate, "")
-    d2 = Driver.construct("name",2, "password", plate, "")
-    d3 = Driver.construct("name",3, "password", 'eda123', "")
-    d4 = Driver.construct("name",4, "password", 'qwe234', "")
-    d5 = Driver.construct("name",5, "password", plate, "")
+
+    cedula = '102020394875'
+    celular = '3008734028'
+    password = 'mypwd'
+    name = 'richard the third'
+    extend ActionDispatch::TestProcess
+    image = fixture_file_upload 'sample_file.png'
+    name2 = 'paul'
+    password2 = 'mypass232'
+    celular2 = '304939302'
+    cedula2 = '1932942'
+    cedula3 = '323542'
+
+    driverHash1 = Hash.new
+    driverHash1['name'] =  name
+    driverHash1['cedula'] = cedula
+    driverHash1['image'] = image
+    driverHash1['cel_number'] = celular
+    driverHash1['password'] = password
+    driverHash2 = Hash.new
+    driverHash2['name'] = name2
+    driverHash2['password'] = password2
+    driverHash2['cel_number'] = celular2
+    driverHash2['cedula'] = cedula2
+    driverHash3 = Hash.new
+    driverHash3['name'] = name2
+    driverHash3['password'] = password
+    driverHash3['cel_number'] = celular
+    driverHash3['cedula'] = cedula3
+    driverHash4 = Hash.new
+    driverHash4['name'] = 'name'
+    driverHash4['cedula'] = '4'
+    driverHash4['password'] = 'password'
+    driverHash5 = Hash.new
+    driverHash5['name'] = 'name'
+    driverHash5['cedula'] = '5'
+    driverHash5['password'] = 'password'
+
+    d1 = Driver.construct(driverHash1, plate)
+    d2 = Driver.construct(driverHash2, plate)
+    d3 = Driver.construct(driverHash3, 'eda123')
+    d4 = Driver.construct(driverHash4, 'qwe234')
+    d5 = Driver.construct(driverHash5, plate)
 
     [d1,d2,d3,d4,d5].each { |driver| driver.save! }
     taxi.reload

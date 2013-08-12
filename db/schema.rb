@@ -11,23 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130808215543) do
-
-  create_table "api_keys", :force => true do |t|
-    t.string   "access_token"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
+ActiveRecord::Schema.define(:version => 20130808202942) do
 
   create_table "drivers", :force => true do |t|
-    t.string   "cedula",     :null => false
-    t.string   "name",       :null => false
-    t.string   "photo_url"
-    t.string   "password",   :null => false
-    t.integer  "taxi_id",    :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "cedula",             :null => false
+    t.string   "name",               :null => false
+    t.string   "password",           :null => false
+    t.integer  "taxi_id",            :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "cel_number"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "map_objects", :force => true do |t|

@@ -3,23 +3,25 @@
 #
 class Driver < ActiveRecord::Base
 
-  attr_accessible :cedula, :name, :photo_url, :taxi_id, :password, :cel_number
+  attr_accessible :cedula, :name, :taxi_id, :password, :cel_number, :image
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
 
+  has_attached_file :image, styles: {
+      small: '125x125>'
+  }
+
   #
   # Creates a new driver
-  # @param name: a string representing the name of the driver
-  # @param cedula: a string representing the cedula/id of the driver
-  # @param password: a string for the password
+  # @param driver: a hash representing the driver model
   # @param placa: a string that must match 'XYZ123'
-  # @param cel_number: a string representing the driver's phone number
   #
-  def Driver.construct(name,cedula, password, placa, cel_number="")
+  def Driver.construct(driver, placa)
     taxi = Taxi.get_or_create(placa)
-    driver = Driver.new(:name=>name,:cedula=>cedula,:taxi_id=>taxi.id, :password=>password, :cel_number => cel_number)
-    
+    driver = Driver.new(driver)
+    driver.taxi_id=taxi.id
+
     return driver
   end
 
@@ -50,6 +52,12 @@ class Driver < ActiveRecord::Base
   #
   def Driver.get_by_taxi_id(taxi_id)
 		Driver.where("taxi_id = #{taxi_id}")
+  end
+
+  def as_json(options={})
+    rpta = super
+    rpta[:image_url] = image.url(:small)
+    rpta
   end
 
 

@@ -10,9 +10,38 @@ class DriversControllerTest < ActionController::TestCase
     Driver.delete_all
     Taxi.delete_all
 
-    @driver1 = Driver.construct('robert', '1020761351', 'mypass123','ABC123')
-    @driver2 = Driver.construct('paul', '123987234', 'mypass987', 'ABC234')
-    @driver3 = Driver.construct('paul', '1029375', 'pas123', 'ABC234')
+    cedula = '102020394875'
+    celular = '3008734028'
+    password = 'mypwd'
+    name = 'richard the third'
+    extend ActionDispatch::TestProcess
+    image = fixture_file_upload 'sample_file.png'
+    name2 = 'paul'
+    password2 = 'mypass232'
+    celular2 = '304939302'
+    cedula2 = '1932942'
+    cedula3 = '323542'
+
+    driverHash1 = Hash.new
+    driverHash1['name'] =  name
+    driverHash1['cedula'] = cedula
+    driverHash1['image'] = image
+    driverHash1['cel_number'] = celular
+    driverHash1['password'] = password
+    driverHash2 = Hash.new
+    driverHash2['name'] = name2
+    driverHash2['password'] = password2
+    driverHash2['cel_number'] = celular2
+    driverHash2['cedula'] = cedula2
+    driverHash3 = Hash.new
+    driverHash3['name'] = name2
+    driverHash3['password'] = password
+    driverHash3['cel_number'] = celular
+    driverHash3['cedula'] = cedula3
+
+    @driver1 = Driver.construct(driverHash1, 'ABC123')
+    @driver2 = Driver.construct(driverHash2, 'ABC234')
+    @driver3 = Driver.construct(driverHash3, 'ABC234')
 
     [@driver1, @driver2, @driver3].each do |d| d.save! end
 
@@ -27,13 +56,15 @@ class DriversControllerTest < ActionController::TestCase
 
   test 'creating a driver should increase driver count and result should be a driver' do
 
-    cedula = '102020394875'
+    cedula = '10223420'
+    celular = '3008734028'
     password = 'mypwd'
     name = 'richard the third'
     placa = 'ABC987'
+    image = fixture_file_upload 'sample_file.png'
 
     assert_difference 'Driver.all.size',1 do
-      post :create, {:format=>:json, :cedula=>cedula, :password=>password, :name=>name, :placa=>placa}
+      post :create, {:format=>:json, :driver=> {:name=>name, :cedula=>cedula, :cel_number=>celular, :password=>password, :image=>image}, :placa=>placa}
       resp = @response.body
       json = MultiJson.load(resp)
       assert_json_matches_driver(json, Driver.last)
@@ -97,6 +128,7 @@ class DriversControllerTest < ActionController::TestCase
 
 
    end
+
 
 
 end
