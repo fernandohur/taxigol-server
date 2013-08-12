@@ -9,7 +9,7 @@ and can hold up to 5 different states
 =end
 class Service < ActiveRecord::Base
 
-  after_save :after_save_callback
+  after_create :notify_creation
 
   ################
   ## Attributes ##
@@ -52,7 +52,7 @@ class Service < ActiveRecord::Base
   end
 
   # this method is executed after .save is called
-  def after_save_callback
+  def notify_creation
     sender = MessageSender.new
     sender.push_payload('',
       {
