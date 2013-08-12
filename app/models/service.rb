@@ -24,7 +24,7 @@ class Service < ActiveRecord::Base
   #
   # This method should be called to construct the Service instead of calling Service.new
   #
-  def Service.ocnstruct(verification_code, address, service_type, latitude=nil, longitude=nil, tip='')
+  def Service.construct(verification_code, address, service_type, latitude=nil, longitude=nil, tip='')
     s = Service.new(
     	:verification_code=>verification_code,
     	:address => address,
@@ -54,7 +54,12 @@ class Service < ActiveRecord::Base
   # this method is executed after .save is called
   def after_save_callback
     sender = MessageSender.new
-    sender.push_payload('',{:service_id=>self.id.to_s,:action=>'service_saved'})
+    sender.push_payload('',
+      {
+        :service_id=>self.id.to_s,
+        :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
+      }
+    )
   end
 
   #
