@@ -24,7 +24,7 @@ class Service < ActiveRecord::Base
   #
   # This method should be called to construct the Service instead of calling Service.new
   #
-  def Service.construct(verification_code, address, service_type, latitude=nil, longitude=nil, tip='')
+  def Service.ocnstruct(verification_code, address, service_type, latitude=nil, longitude=nil, tip='')
     s = Service.new(
     	:verification_code=>verification_code,
     	:address => address,
@@ -40,6 +40,16 @@ class Service < ActiveRecord::Base
   #############
   ## Methods ##
   #############
+
+  def Service.update(id, service_hash)
+    if service_hash.include? :state
+      service = Service.find(id)
+      state = service_hash[:state]
+      taxi_id = service_hash[:taxi_id]
+      verification_code = service_hash[:verification_code]
+      service.update_state(state, taxi_id, verification_code)          
+    end
+  end
 
   # this method is executed after .save is called
   def after_save_callback
@@ -181,9 +191,8 @@ class Service < ActiveRecord::Base
   #
   # This exceptions is raised whenever there is an illegal state change.
   # Allowed changes are as follows:
-  # 1. pending
-  # 2. confirmado || cancelled
-  # 3. cancelled || abandoned || complete
+  # 1. pending => confirmado|cancelled
+  # 2. confirmado => cancelled | abandoned | complete
   #
   class StateChangeError < ArgumentError
   end

@@ -53,7 +53,11 @@ TaxigolServer::Application.routes.draw do
     namespace :v1 do
       resources :services
       resources :positions
-      resources :drivers
+      resources :drivers do
+        collection do
+          get 'auth'
+        end
+      end
       resources :taxis
     end
   end

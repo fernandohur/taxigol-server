@@ -9,6 +9,11 @@ module Api
 				respond_with Driver.all
 			end
 
+			# GET /drivers/auth
+			def auth
+				respond_with Driver.auth(params[:username],params[:password])
+			end
+
 			# GET /drivers/:id
 			def show
 				respond_with Driver.find(params[:id])
