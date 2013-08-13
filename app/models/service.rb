@@ -42,13 +42,12 @@ class Service < ActiveRecord::Base
   #############
 
   def Service.update(id, service_hash)
-    if service_hash.include? :state
-      service = Service.find(id)
-      state = service_hash[:state]
-      taxi_id = service_hash[:taxi_id]
-      verification_code = service_hash[:verification_code]
-      service.update_state(state, taxi_id, verification_code)          
-    end
+    service = Service.find(id)
+    state = service_hash[:state]
+    taxi_id = service_hash[:taxi_id]
+    verification_code = service_hash[:verification_code]
+    service.update_state(state, taxi_id, verification_code)  
+    return service.reload       
   end
 
   # this method is executed after .save is called

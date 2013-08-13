@@ -23,7 +23,8 @@ module Api
 
 			# PUT /services/:id
 			def update
-				respond_with Service.update(params[:id],params[:service])
+				resp = Service.update(params[:id],params[:service])
+				render json: resp
 			rescue ActiveRecord::RecordNotFound
 				respond_with Service::StateChangeError
 			end
