@@ -9,8 +9,8 @@ class MessageSender
     @uri = URI('https://go.urbanairship.com/api/push/broadcast/')
     @appKey = ENV["URBAN_AIRSHIP_APP_KEY"]#'yO9cF34tTVSVKU8R1Qu7fw'
     @masterSecret = ENV["URBAN_AIRSHIP_MASTER_SECRET"]#'7TXRczMdQeKwUEg-5LSS5A'
-    assert @appKey != nil
-    assert @masterSecret !=nil
+    raise RuntimeError unless @appKey
+    raise RuntimeError unless @masterSecret
   end
 
 	def push(payload_json)
