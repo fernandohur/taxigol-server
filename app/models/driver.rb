@@ -55,9 +55,9 @@ class Driver < ActiveRecord::Base
   end
 
   def as_json(options={})
-    rpta = super
-    rpta[:image_url] = image.url(:small)
-    rpta
+    json = super
+    json[:image_url] = image.url(:small)
+    return json
   end
 
 
