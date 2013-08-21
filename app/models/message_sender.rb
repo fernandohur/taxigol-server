@@ -1,14 +1,16 @@
 require 'net/http'
 require 'net/https'
-
 require 'rubygems'
 require 'json'
+
 class MessageSender
 
   def initialize
     @uri = URI('https://go.urbanairship.com/api/push/broadcast/')
-    @appKey = 'yO9cF34tTVSVKU8R1Qu7fw'
-    @masterSecret = '7TXRczMdQeKwUEg-5LSS5A'
+    @appKey = ENV["URBAN_AIRSHIP_APP_KEY"]#'yO9cF34tTVSVKU8R1Qu7fw'
+    @masterSecret = ENV["URBAN_AIRSHIP_MASTER_SECRET"]#'7TXRczMdQeKwUEg-5LSS5A'
+    assert @appKey != nil
+    assert @masterSecret !=nil
   end
 
 	def push(payload_json)
