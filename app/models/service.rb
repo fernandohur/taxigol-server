@@ -10,6 +10,7 @@ and can hold up to 5 different states
 class Service < ActiveRecord::Base
 
   after_create :notify_creation
+  after_save :save_callback
 
   ################
   ## Attributes ##
