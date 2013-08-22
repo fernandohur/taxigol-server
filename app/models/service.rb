@@ -10,7 +10,7 @@ and can hold up to 5 different states
 class Service < ActiveRecord::Base
 
   after_create :notify_creation
-  after_save :save_callback
+  after_save :notify_save
 
   ################
   ## Attributes ##
@@ -60,6 +60,18 @@ class Service < ActiveRecord::Base
         :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
       }
     )
+  end
+
+  def notify_save
+    sender = MessageSender.new
+    service_id = self.id.to_s
+    service_state = self.state.to_s
+    sender.push_payload('',
+      {
+        :service_id=>service_id,
+        :"com.thinkbites.taxista.state_changed"=>service_id
+      }
+    )  
   end
 
   #
