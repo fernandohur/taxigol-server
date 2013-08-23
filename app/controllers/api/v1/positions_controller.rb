@@ -16,6 +16,11 @@ module Api
 				respond_with nil
 			end
 
+			# GET /positions/last/?taxi_id={taxi id}
+			def last
+				raise RuntimeError, "unsupported operation (for now)"
+			end
+
 			# POST /positions
 			def create
 				respond_with Position.create(params[:position])
