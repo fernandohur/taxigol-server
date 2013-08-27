@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>TaxigolServer</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+	<head>
+	  <title>TaxiTouch</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <%= stylesheet_link_tag    "application", :media => "all" %>
+	  <%= javascript_include_tag "application" %>
+	  <%= csrf_meta_tags %>
+	</head>
+	<body style="margin-top:60px">
 
-<%= yield %>
+		<%= render "common/navbar" %>
+		<%= yield %>
 
-</body>
+		
+	</body>
 </html>

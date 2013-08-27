@@ -1,0 +1,9 @@
+<%
+	state = service.state
+	css_class = "label-default" 
+	css_class = "label-primary" if service.is_confirmed
+	css_class = "label-success" if service.is_complete
+	css_class = "label-warning" if service.is_canceled
+	css_class = "label-primary" if service.is_abandoned
+%>
+<span class="label <%= css_class %>"><%= state %></span>

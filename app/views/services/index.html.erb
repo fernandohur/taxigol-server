@@ -1,25 +1,23 @@
 <h1>Panel de control de servicios</h1>
 
-<div >
+<div class="container">
 	<table class="table table-striped">
 		<tr>
-			<td>Taxi id</td>
-			<td>Código de seguridad</td>
-			<td>Dirección</td>
-			<td>Latitud</td>
-			<td>Longitud</td>
-			<td>Estado</td>
-			<td>Propina</td>
+			<th>Id</th>
+			<th>Dirección</th>
+			<th>Estado</th>
+			<th>Propina</th>
+			<th>Fecha</th>
 		</tr>
 	<% @services.each do |s| %>
 		<tr>
-			<td><%= s.taxi_id %></td>
-			<td><%= s.verification_code %></td>
+			<td><%= s.id %></td>
 			<td><%= s.address %></td>
-			<td><%= s.latitude %></td>
-			<td><%= s.longitude %></td>
-			<td><%= s.state %></td>
+			<td><%= render_state_label(s) %></td>
 			<td><%= s.tip %></td>
+			<td>
+				<%= render_date(s.created_at) %>
+			</td>
 		</tr>
 	<% end %>
 	</table>

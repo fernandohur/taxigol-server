@@ -101,6 +101,10 @@ class Service < ActiveRecord::Base
 
   end
 
+  def Service.get(params={})
+    return Service.order(:by=>:created_at)
+  end
+
   # returns all the services with the given state
   def Service.get_by_state(state)
   	Service.where(" state = '#{state}'")
