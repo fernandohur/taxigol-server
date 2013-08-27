@@ -1,3 +1,8 @@
+<%# 
+	The _state.html.erb partial allows pretty printing of a service's 
+	state using bootstrap's label's.
+	@param :service a Service instante 
+#%>
 <%
 	state = service.state
 	css_class = "label-default" 
@@ -6,4 +11,6 @@
 	css_class = "label-warning" if service.is_canceled
 	css_class = "label-primary" if service.is_abandoned
 %>
-<span class="label <%= css_class %>"><%= state %></span>
+<span class="label <%= css_class %>">
+	<%= state %>
+</span>

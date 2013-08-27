@@ -1,3 +1,7 @@
+<%#
+	Partial to pretty print a datetime to words. 
+	@param :date a datetime object
+%>
 <% days_ago = (Time.zone.now - date ).to_i / 1.day %>
 <% hours_ago = (Time.zone.now - date ).to_i / 1.hour %>
 <% minutes_ago = (Time.zone.now - date ).to_i / 1.minute %>
