@@ -7,7 +7,7 @@ class Driver < ActiveRecord::Base
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
-
+  has_one :apid
   has_attached_file :image, styles: {
       small: '125x125>'
   }

@@ -9,6 +9,10 @@ and can hold up to 5 different states
 =end
 class Service < ActiveRecord::Base
 
+  validates :verification_code, presence: true
+  validates :address, presence: true
+  validates :state, presence: true
+
   after_create :notify_creation
   after_save :notify_save
 
