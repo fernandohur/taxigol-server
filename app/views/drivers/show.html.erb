@@ -1,20 +1,17 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Name:</b>
-  <%= @driver.name %>
-</p>
-
-<p>
-  <b>Cedula:</b>
-  <%= @driver.cedula %>
-</p>
-
-<p>
-  <b>Photo url:</b>
-  <%= image_tag  @driver.image.url(:small)%>
-</p>
-
-
-<%= link_to 'Edit', edit_driver_path(@driver) %> |
-<%= link_to 'Back', drivers_path %>
+<div class="container">
+	<p>
+	  <b>Name:</b>
+	  <%= @driver.name %>
+	</p>
+	<p>
+	  <b>Cedula:</b>
+	  <%= @driver.cedula %>
+	</p>
+	<p>
+	  <%= image_tag  @driver.image.url(:small)%>
+	</p>
+	<%= link_to 'Editar', edit_driver_path(@driver) %> |
+	<%= link_to 'Conductores', drivers_path %>
+</div>
