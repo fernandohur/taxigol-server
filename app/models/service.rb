@@ -102,7 +102,7 @@ class Service < ActiveRecord::Base
   end
 
   def Service.get(params={})
-    return Service.order(:by=>:created_at)
+    return Service.all
   end
 
   # returns all the services with the given state
