@@ -1,5 +1,7 @@
 TaxigolServer::Application.routes.draw do
 
+  match '/' => "home#index"
+
   resources :drivers do
     collection do
       get 'get_drivers'

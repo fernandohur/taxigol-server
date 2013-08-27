@@ -1,25 +1,33 @@
-<h1>Listing drivers</h1>
+<div class="container">
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Cedula</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <h1>Conductores</h1>
 
-<% @drivers.each do |driver| %>
-  <tr>
-    <td><%= driver.name %></td>
-    <td><%= driver.cedula %></td>
-    <td><%= link_to 'Show', driver %></td>
-    <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
-    <td><%= link_to 'Destroy', driver, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Cedula</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>    
+      <% @drivers.each do |driver| %>
+        <tr>
+          <td><%= driver.name %></td>
+          <td><%= driver.cedula %></td>
+          <td><%= link_to 'Ver', driver %></td>
+          <td><%= link_to 'Editar', edit_driver_path(driver) %></td>
+          <td><%= link_to 'Destroy', driver, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<br />
+  <br />
 
-<%= link_to 'New Driver', new_driver_path %>
+  <%= link_to 'Registrar Conductor', new_driver_path %>
+
+
+</div>

@@ -1,24 +1,30 @@
-<h1>Panel de control de servicios</h1>
-
 <div class="container">
-	<table class="table table-striped">
-		<tr>
-			<th>Id</th>
-			<th>Dirección</th>
-			<th>Estado</th>
-			<th>Propina</th>
-			<th>Fecha</th>
-		</tr>
+	
+	<h1>
+		Panel de control de servicios
+	</h1>
+	<table class="table table-condensed table-hover">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Dirección</th>
+				<th>Estado</th>
+				<th>Propina</th>
+				<th>Fecha</th>
+			</tr>
+		</thead>
 	<% @services.each do |s| %>
-		<tr>
-			<td><%= s.id %></td>
-			<td><%= s.address %></td>
-			<td><%= render_state_label(s) %></td>
-			<td><%= s.tip %></td>
-			<td>
-				<%= render_date(s.created_at) %>
-			</td>
-		</tr>
+		<tbody>
+			<tr>
+				<td><%= link_to s.id, s %></td>
+				<td><%= s.address %></td>
+				<td><%= render_state_label(s) %></td>
+				<td><%= s.tip %></td>
+				<td>
+					<%= render_date(s.created_at) %>
+				</td>
+			</tr>
+		</tbody>
 	<% end %>
 	</table>
 </div>

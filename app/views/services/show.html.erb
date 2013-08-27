@@ -1,3 +1,45 @@
 <div class="container">
-  <p>hola amigo como estás como te ha ido</p>
+
+	<p>
+		<b>Dirección: </b>
+		<%= @service.address %>
+	</p>
+	<p>
+		<b>Estado: </b>
+		<%= render_state_label(@service) %>
+	</p>
+	<p>
+		<b>Propina: </b>
+		<%= @service.tip %>
+	</p>
+	<p>
+		<b>Tipo de Servicio: </b>
+		<%= 
+			if @service.service_type && @service.service_type.size > 0
+				@service.service_type
+			else
+				"normal"
+			end  
+		%>
+	</p>
+	<p>
+		<b>Fecha:</b> 
+		<%= @service.created_at %>
+	</p>
+	<p>
+		<b>Conductor asignado: </b>
+		<%=
+			if @service.is_confirmed
+				 link_to @service.taxi.name, @service.taxi.name
+			else
+				"ninguno"
+			end 
+		%>
+	</p>
+
+	<button id="btnCancelService" type="button" class="btn btn-warning">
+		Cancelar servicio
+	</button>
+
 </div>
+
