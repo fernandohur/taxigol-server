@@ -10,8 +10,7 @@
 
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title:"Hello World!",
-            icon:"<%= image_path "/assets/taxi.png"  %>"
+            title:"Hello World!"
         });
 
         marker.setMap(map);
@@ -20,7 +19,7 @@
     function initialize() {
         var mapOptions = {
             center: new google.maps.LatLng(4.6023996, -74.0655158),
-            zoom: 8,
+            zoom: 12,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),
@@ -29,6 +28,16 @@
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 
-
+    var taxis = new Taxis()
+    taxis.fetch()
+    .success(function(){
+        taxis.each(function(taxi){
+            var pos = taxi.position();
+            if (pos !== null){
+                addMarker(map,pos.latitude,pos.longitude);
+            }
+        });
+    })
+    .error(Alert.error("no se ha podido cargar la pagina"));
 
 </script>

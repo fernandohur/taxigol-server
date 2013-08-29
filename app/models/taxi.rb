@@ -36,4 +36,10 @@ class Taxi < ActiveRecord::Base
     Taxi.find(taxi_id).drivers
   end
 
+  def as_json(options={})
+    json = super
+    json[:position] = self.positions.last
+    return json
+  end
+
 end

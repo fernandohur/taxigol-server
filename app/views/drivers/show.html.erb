@@ -1,14 +1,32 @@
 <p id="notice"><%= notice %></p>
 
 <div class="container">
-	<p>
-	  <b>Name:</b>
-	  <%= @driver.name %>
-	</p>
-	<p>
-	  <b>Cedula:</b>
-	  <%= @driver.cedula %>
-	</p>
+
+	<h3>Conductor</h3>
+	<div class="row">
+		<div class="col-md-2">
+			<b>Name:</b>
+		</div>
+		<div class="col-md-10">
+			<%= @driver.name %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<b>Cedula:</b>
+		</div>
+		<div class="col-md-10">
+			<%= @driver.cedula %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<b>Taxi:</b>
+		</div>
+		<div class="col-md-10">
+			<%= link_to @driver.taxi.installation_id, @driver.taxi %>
+		</div>
+	</div>
 	<p>
 	  <%= image_tag  @driver.image.url(:small)%>
 	</p>
