@@ -1,5 +1,82 @@
-<h1>Solicite un taxi!</h1>
+<div class="container">
 
-<%= render 'form' %>
+	<h1>Pedir taxi</h1>
+	<div class="form-horizontal" role="form">
+		<div class="form-group">
+			<label for="" class="col-lg-2 control-label">Dirección</label>
+			<div class="col-lg-10">
+				<input id="txtAddress" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-lg-2 control-label">Latitud</label>
+			<div class="col-lg-10">
+				<input id="txtLat" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-lg-2 control-label">Longitud</label>
+			<div class="col-lg-10">
+				<input id="txtLon" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-lg-2 control-label">Tipo de Servicio</label>
+			<div class="col-lg-10">
+				<input id="txtType" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-lg-2 control-label">Propina</label>
+			<div class="col-lg-10">
+				<input id="txtTip" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-lg-2 control-label">Código de Seguridad</label>
+			<div class="col-lg-10">
+				<input id="txtVerificationCode" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-offset-2 col-lg-10">
+				<button id="btnSend" type="button" class="btn btn-primary">Enviar</button>
+			</div>
+		</div>
+	</div>
+	
+</div>
+<script>
+	$(document).ready(function() {
+	
+		var txtAddress = $('#txtAddress');
+		var txtLat = $('#txtLat');
+		var txtLon = $('#txtLon');
+		var txtType = $('#txtType');
+		var txtTip = $('#txtTip');
+		var txtVerificationCode = $('#txtVerificationCode');
+		var btnSend = $('#btnSend');
 
-<%= link_to 'Back', services_path %>
+		btnSend.click(function(event){
+			var params = {
+				address: txtAddress.val(),
+				latitude: txtLat.val(),
+				longitude: txtLon.val(),
+				service_type: txtType.val(),
+				verification_code: txtVerificationCode.val()
+			}
+			var service = new Service(params);
+			var response = service.save({},
+				{
+					error: Alert.error("Error creando el servicio, verifica los campos"),
+					success: function(){
+						window.location.href="/services";
+					}
+				}
+			);
+			if(response == false){
+				Alert.error("Error creando el servicio");
+			}
+		});
+	});
+</script>

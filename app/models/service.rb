@@ -102,7 +102,7 @@ class Service < ActiveRecord::Base
   end
 
   def Service.get(params={})
-    return Service.all
+    return Service.all(:limit=>50,:order=>"created_at desc")
   end
 
   # returns all the services with the given state

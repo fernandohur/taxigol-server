@@ -7,6 +7,11 @@ class Taxi < ActiveRecord::Base
   has_many :services
   has_many :drivers
 
+  def Taxi.create(hash)
+    installation_id = hash[:installation_id]
+    return get_or_create(installation_id)
+  end
+
   # finds a taxi by the given installation_id, if not found, creates a new one
   def Taxi.get_or_create(installation_id)
     placa = installation_id

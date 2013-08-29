@@ -1,0 +1,10 @@
+<%#
+
+	@param latitude
+	@param longitude
+	@param zoom
+	@param size_x
+	@param size_y
+
+%>
+<img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= latitude %>,<%= longitude %>&zoom=<%= zoom %>&size=<%= size_x %>x<%= size_y %>&maptype=roadmap&markers=color:blue%7Clabel:S%7C<%= latitude %>,<%= longitude %>&sensor=false" alt="" class="img-thumbnail">

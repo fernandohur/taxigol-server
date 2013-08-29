@@ -15,4 +15,15 @@ module ApplicationHelper
 		render :partial=>"common/state",:locals=>{:service=>service}
 	end
 
+	def render_static_map(service, size_x=300, size_y=300, zoom=13)
+		render :partial=>"common/static_map",:locals=>
+			{
+				:latitude => service.latitude,
+				:longitude => service.longitude,
+				:size_x => size_x,
+				:size_y => size_y,
+				:zoom => zoom
+			}
+	end
+
 end

@@ -1,4 +1,4 @@
-<div id="map-canvas"/>
+<div id="map-canvas" style="height:100%"/>
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgGzKuhM7giCRIAY-4BAmW8pGVhyZyfnc&sensor=false">
 </script>
@@ -25,17 +25,6 @@
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),
                 mapOptions);
-    <% @taxis.each do |t|%>
-    <% e = t.get_last_position %>
-    <%    if e!= nil then %>
-    <% lat = e.latitude %>
-    <% lon = e.longitude %>
-    var latitude = <%= lat%>;
-    var longitude = <%= lon%>;
-    addMarker(map,latitude,longitude);
-    <%end%>
-    <% end %>
-
 
     }
     google.maps.event.addDomListener(window, 'load', initialize);
