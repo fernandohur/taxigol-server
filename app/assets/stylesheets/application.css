@@ -12,3 +12,6 @@
  *= require variables.less
  */
 
+body,html{
+	height:100%;
+}
