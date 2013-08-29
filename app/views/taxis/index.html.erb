@@ -4,13 +4,20 @@
 </script>
 <script type="text/javascript">
     var map = null;
-    function addMarker(map, lat, lon)
+    /**
+     * Helper function to add a marker to the map
+     * @param {google.maps.Map} map     [a GoogleMap reference]
+     * @param {double} lat     [the latitude of the marker]
+     * @param {double} lon     [the longitude of the marker]
+     * @param {String} address [the address to display in the title]
+     */
+    function addMarker(map, lat, lon, address)
     {
         var myLatlng = new google.maps.LatLng(lat,lon);
 
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title:"Hello World!"
+            title: address
         });
 
         marker.setMap(map);

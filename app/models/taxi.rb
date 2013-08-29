@@ -26,12 +26,24 @@ class Taxi < ActiveRecord::Base
 		return taxi
   end
 
+  # using the current_driver_id attr returns the driver that matches
+  # that id, if current_driver_id is nil (i.e. no current driver), returns nil
+  def get_current_driver
+    if current_driver_id
+      return Driver.find(current_driver_id)
+    else
+      return nil unless current_driver_id
+    end
+  end
+
 	def get_last_position
     pos = self.positions.last
     return pos if pos
     raise NoPositionError, "taxi #{id} has #{positions.size} positions" if pos == nil
 	end
 
+  # returns all the drivers that are asociated with a specified taxi
+  # @param taxi_id the id of the taxi
   def Taxi.get_drivers(taxi_id)
     Taxi.find(taxi_id).drivers
   end
