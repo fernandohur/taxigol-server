@@ -11,14 +11,18 @@
      * @param {double} lon     [the longitude of the marker]
      * @param {String} address [the address to display in the title]
      */
-    function addMarker(map, lat, lon, address)
+    function addMarker(map, lat, lon, id)
     {
         var myLatlng = new google.maps.LatLng(lat,lon);
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title: address
+            clickable: true
+        });
+        google.maps.event.addListener(marker, 'click', function() {
+            window.location.href="/taxis/"+id;
         });
         marker.setMap(map);
+        return marker;
     }
 
     function initialize() {
@@ -39,7 +43,7 @@
         taxis.each(function(taxi){
             var pos = taxi.position();
             if (pos !== null){
-                addMarker(map,pos.latitude,pos.longitude,taxi.new String(attributes.id));
+                addMarker(map,pos.latitude,pos.longitude,taxi.attributes.id);
             }
         });
     })

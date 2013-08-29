@@ -34,6 +34,8 @@ class Taxi < ActiveRecord::Base
     else
       return nil unless current_driver_id
     end
+  rescue
+    return nil
   end
 
 	def get_last_position

@@ -4,20 +4,10 @@
 	<div class="row">
 		<div class="col-md-6">
 			
-			<p>
-				<b>Dirección: </b>
-				<%= @service.address %>
-			</p>
-			<p>
-				<b>Estado: </b>
-				<%= render_state_label(@service) %>
-			</p>
-			<p>
-				<b>Propina: </b>
-				<%= @service.tip %>
-			</p>
-			<p>
-				<b>Tipo de Servicio: </b>
+			<p><b>Dirección: </b><%= @service.address %></p>
+			<p><b>Estado: </b><%= render_state_label(@service) %></p>
+			<p><b>Propina: </b><%= @service.tip %></p>
+			<p><b>Tipo de Servicio: </b>
 				<%= 
 					if @service.service_type && @service.service_type.size > 0
 						@service.service_type
@@ -26,10 +16,7 @@
 					end  
 				%>
 			</p>
-			<p>
-				<b>Fecha:</b> 
-				<%= @service.created_at %>
-			</p>
+			<p><b>Fecha:</b> <%= @service.created_at %></p>
 			<p>
 				<b>Conductor asignado: </b>
 				<%=
@@ -63,9 +50,7 @@
 		btnCancel.click(cancelService);
 
 	})
-	.error(function(){
-		Alert.error('error cargando la página, por favor refresca');
-	});
+	.error(Alert.error('error cargando la página, por favor refresca'));
 	
 	function cancelService(){
 		service.cancel();
