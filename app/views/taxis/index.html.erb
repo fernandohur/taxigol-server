@@ -14,12 +14,10 @@
     function addMarker(map, lat, lon, address)
     {
         var myLatlng = new google.maps.LatLng(lat,lon);
-
         var marker = new google.maps.Marker({
             position: myLatlng,
             title: address
         });
-
         marker.setMap(map);
     }
 
@@ -41,7 +39,7 @@
         taxis.each(function(taxi){
             var pos = taxi.position();
             if (pos !== null){
-                addMarker(map,pos.latitude,pos.longitude);
+                addMarker(map,pos.latitude,pos.longitude,taxi.new String(attributes.id));
             }
         });
     })

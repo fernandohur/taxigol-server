@@ -34,7 +34,7 @@
 				<b>Conductor asignado: </b>
 				<%=
 					if @service.is_confirmed
-						 link_to @service.taxi.name, @service.taxi.name
+						 link_to @service.taxi, @service.taxi
 					else
 						"ninguno"
 					end%>
