@@ -125,8 +125,6 @@ class DriversControllerTest < ActionController::TestCase
 
      assert json.size == 2
 
-
-
    end
 
 
