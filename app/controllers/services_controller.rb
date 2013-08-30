@@ -2,18 +2,11 @@ class ServicesController < ApplicationController
 
   # GET /services
   # GET /services.json
-  #params :taxi_id optionally receives a taxi id in which case returns all Services who's taxi_id matches the parameter
   def index
-    taxi_id = params[:taxi_id]
-    if taxi_id && taxi_id.to_s.length>0
-      @services = Service.get_pending_or_confirmed(taxi_id)
-    else
-      @services = Service.all
-    end
+    @services = Service.get(params)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @services }
     end
   end
 

@@ -1,20 +1,39 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Name:</b>
-  <%= @driver.name %>
-</p>
+<div class="container">
 
-<p>
-  <b>Cedula:</b>
-  <%= @driver.cedula %>
-</p>
+	<h3>Conductor</h3>
+	<div class="row">
+		<div class="col-md-2">
+			<b>Name:</b>
+		</div>
+		<div class="col-md-10">
+			<%= @driver.name %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<b>Cedula:</b>
+		</div>
+		<div class="col-md-10">
+			<%= @driver.cedula %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<b>Taxi:</b>
+		</div>
+		<div class="col-md-10">
+			<%= link_to @driver.taxi.installation_id, @driver.taxi %>
+		</div>
+	</div>
+	<p>
+	  <%= image_tag  @driver.image.url(:small)%>
+	</p>
+	
+	<h4>Servicio</h4>
+	<%= render_services @driver.taxi.services %>
 
-<p>
-  <b>Photo url:</b>
-  <%= image_tag  @driver.image.url(:small)%>
-</p>
-
-
-<%= link_to 'Edit', edit_driver_path(@driver) %> |
-<%= link_to 'Back', drivers_path %>
+	<%= link_to 'Editar', edit_driver_path(@driver) %> |
+	<%= link_to 'Conductores', drivers_path %>
+</div>

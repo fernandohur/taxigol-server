@@ -17,7 +17,7 @@ class ActiveSupport::TestCase
     assert_not_nil resp, "response was nil"
     assert_not_nil resp["error"], "error was #{resp["error"]}"
     assert resp["error"]== exception_class.to_s, " error was #{resp["error"]} but expected #{exception_class.to_s} "
-    assert resp["message"] != nil , "response was excepted != nil, but was nil"
+    assert_not_nil resp["message"], "message should not be nil, but was nil"
 
   end
 

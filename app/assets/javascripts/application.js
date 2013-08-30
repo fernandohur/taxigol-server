@@ -12,4 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require lib/underscore.js
+//= require lib/json2.js
+//= require lib/backbone.js
 //= require_tree .
+

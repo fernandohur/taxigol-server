@@ -1,5 +1,17 @@
-<p id="notice"><%= notice %></p>
+<div class="container">
+	
+	<h3>Taxi</h3>
+	<p><b>Placa: </b><%= @taxi.installation_id %></p>
+	<h4>Conductor actual</h4>
+	<p>
+		<%= link_to @taxi.get_current_driver.name, @taxi.get_current_driver if @taxi.get_current_driver%>
+	</p>
+	<h4>Conductores</h4>
+	<% @taxi.drivers.each do |driver| %>	
+		<p>
+			<%= link_to driver.name, driver %>
+		</p>
+	<% end %>
 
+</div>
 
-<%= link_to 'Edit', edit_taxi_path(@taxi) %> |
-<%= link_to 'Back', taxis_path %>

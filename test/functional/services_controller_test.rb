@@ -249,18 +249,6 @@ class ServicesControllerTest < ActionController::TestCase
     assert Service.all.size==3
   end
 
-  test "get to index with params should return only specific" do
-
-    put :update, {:format=>:json, :id=>@service2.id, :state=>Service.confirmed, :taxi_id=>Taxi.last.id}
-
-    get :index ,{:format=>:json, :taxi_id=>Taxi.last.id}
-    services = MultiJson.load(@response.body)
-    should_contain_service(services,@service2)
-    should_contain_service(services,@service1)
-    should_contain_service(services,@service3)
-    assert services.size==3
-  end
-
   test "post to create with latitude and longitude should init those attrs" do
     address = 'calle 132 a # 19-43'
     verification_code = '12'

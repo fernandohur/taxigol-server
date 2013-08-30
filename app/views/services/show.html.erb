@@ -1,27 +1,64 @@
-<p id="notice"><%= notice %></p>
+<div class="container">
 
-<p>
-  <b>Address:</b>
-  <%= @service.address %>
-</p>
 
-<p>
-  <b>Confirm:</b>
-  <%= @service.state %>
-</p>
+	<div class="row">
+		<div class="col-md-6">
+			
+			<p><b>Dirección: </b><%= @service.address %></p>
+			<p><b>Estado: </b><%= render_state_label(@service) %></p>
+			<p><b>Propina: </b><%= @service.tip %></p>
+			<p><b>Tipo de Servicio: </b>
+				<%= 
+					if @service.service_type && @service.service_type.size > 0
+						@service.service_type
+					else
+						"normal"
+					end  
+				%>
+			</p>
+			<p><b>Fecha:</b> <%= @service.created_at %></p>
+			<p>
+				<b>Conductor asignado: </b>
+				<%=
+					if @service.is_confirmed
+						 link_to @service.taxi, @service.taxi
+					else
+						"ninguno"
+					end%>
+			</p>
+		</div>
+		<div class="col-md-6">
+			<%= render_static_map(@service,400,400,14) %>
+		</div>
+	</div>
 
-<a onclick="cancelar_servicio()">Para Cancelar</a>
+	<button id="btnCancel" type="button" class="btn btn-warning"> Cancelar servicio </button>
 
-<script>
-    function cancelar_servicio(){
-        $.ajax({
-            type: "PUT" ,
-            url: "<%= @service.id.to_s << ".json"%>",
-            data: {state: "cancelado"}
-        }).done(function(msg){
-                    alert("Taxi Cancelado:" + msg);
-                });
-    };
+</div>
+
+<script type="text/javascript">
+
+	// find the cancel button and hide it
+	var btnCancel = $("#btnCancel");
+	btnCancel.hide();
+
+	// fetch the current service, when done => show the button
+	var service = new Service();
+	service.find(<%= @service.id %>)
+	.done(function(){
+		btnCancel.show();
+		btnCancel.click(cancelService);
+
+	})
+	.error(Alert.error('error cargando la página, por favor refresca'));
+	
+	function cancelService(){
+		service.cancel();
+		service.save({},{
+			success: Alert.success("Servicio cancelado exitosamente"),
+			error: Alert.error("ha ocurrido un error, es posible que estés intentando cancelar un servicio canceladoi")
+		});
+	}
+
 </script>
 
-<%= link_to 'Back', services_path %>

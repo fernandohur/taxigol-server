@@ -9,16 +9,18 @@ and can hold up to 5 different states
 =end
 class Service < ActiveRecord::Base
 
-  after_save :after_save_callback
+  validates :verification_code, presence: true
+  validates :address, presence: true
+  validates :state, presence: true
+
+  after_create :notify_creation
+  after_save :notify_save
 
   ################
   ## Attributes ##
   ################
   attr_accessible :taxi_id, :verification_code, :address, :service_type, :latitude, :longitude,:state,:tip
   belongs_to :taxi
-
-
-
 
   ##################
   ## Constructors ##
@@ -44,10 +46,36 @@ class Service < ActiveRecord::Base
   ## Methods ##
   #############
 
+  def Service.update(id, service_hash)
+    service = Service.find(id)
+    state = service_hash[:state]
+    taxi_id = service_hash[:taxi_id]
+    verification_code = service_hash[:verification_code]
+    service.update_state(state, taxi_id, verification_code)  
+    return service.reload       
+  end
+
   # this method is executed after .save is called
-  def after_save_callback
+  def notify_creation
     sender = MessageSender.new
-    sender.push_payload('',{:service_id=>self.id.to_s,:action=>'service_saved'})
+    sender.push_payload('',
+      {
+        :service_id=>self.id.to_s,
+        :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
+      }
+    )
+  end
+
+  def notify_save
+    sender = MessageSender.new
+    service_id = self.id.to_s
+    service_state = self.state.to_s
+    sender.push_payload('',
+      {
+        :service_id=>service_id,
+        :"com.thinkbites.taxista.state_changed"=>service_id
+      }
+    )  
   end
 
   #
@@ -71,6 +99,10 @@ class Service < ActiveRecord::Base
       raise StateChangeError, "state '#{state}' is not a valid Service state"
     end
 
+  end
+
+  def Service.get(params={})
+    return Service.all(:limit=>50,:order=>"created_at desc")
   end
 
   # returns all the services with the given state
@@ -184,9 +216,8 @@ class Service < ActiveRecord::Base
   #
   # This exceptions is raised whenever there is an illegal state change.
   # Allowed changes are as follows:
-  # 1. pending
-  # 2. confirmado || cancelled
-  # 3. cancelled || abandoned || complete
+  # 1. pending => confirmado|cancelled
+  # 2. confirmado => cancelled | abandoned | complete
   #
   class StateChangeError < ArgumentError
   end

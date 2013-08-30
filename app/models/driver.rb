@@ -7,7 +7,7 @@ class Driver < ActiveRecord::Base
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
-
+  has_one :apid
   has_attached_file :image, styles: {
       small: '125x125>'
   }
@@ -55,9 +55,9 @@ class Driver < ActiveRecord::Base
   end
 
   def as_json(options={})
-    rpta = super
-    rpta[:image_url] = image.url(:small)
-    rpta
+    json = super
+    json[:image_url] = image.url(:small)
+    return json
   end
 
 

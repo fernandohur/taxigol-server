@@ -1,0 +1,18 @@
+<%#
+	Partial to pretty print a datetime to words. 
+	@param :date a datetime object
+%>
+<% days_ago = (Time.zone.now - date ).to_i / 1.day %>
+<% hours_ago = (Time.zone.now - date ).to_i / 1.hour %>
+<% minutes_ago = (Time.zone.now - date ).to_i / 1.minute %>
+<p>hace
+    <% if minutes_ago == 0 %>
+        un instante
+    <% elsif hours_ago == 0 %>
+        <%= pluralize(minutes_ago,"minuto","minutos") %>
+    <% elsif days_ago == 0%>
+        <%= pluralize(hours_ago,"hora","horas") %>
+    <% else %>
+        <%= pluralize(days_ago,"dia","dias") %>
+    <% end %>
+</p>

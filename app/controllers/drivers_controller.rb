@@ -32,6 +32,7 @@ class DriversController < ApplicationController
     end
   end
 
+  # GET /users/1/edit
   def edit
     @driver = Driver.find(params[:id])
   end

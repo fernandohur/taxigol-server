@@ -1,24 +1,7 @@
-<h1>Listado de Servicios</h1>
-
-<table>
-	<tr>
-		<td>Taxi id</td>
-		<td>Código de seguridad</td>
-		<td>Dirección</td>
-		<td>Latitud</td>
-		<td>Longitud</td>
-		<td>Estado</td>
-		<td>Propina</td>
-	</tr>
-<% @services.each do |s| %>
-	<tr>
-		<td><%= s.taxi_id %></td>
-		<td><%= s.verification_code %></td>
-		<td><%= s.address %></td>
-		<td><%= s.latitude %></td>
-		<td><%= s.longitude %></td>
-		<td><%= s.state %></td>
-		<td><%= s.tip %></td>
-	</tr>
-<% end %>
-</table>
+<div class="container">
+	
+	<h1>
+		Panel de control de servicios
+	</h1>
+	<%= render :partial=>"services",:locals=>{:services=>@services} %>
+</div>

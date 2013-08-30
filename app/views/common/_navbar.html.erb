@@ -1,0 +1,31 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+
+  <div class="container">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">TaxiTouch</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="">
+          <%= link_to "Servicios",services_path %>
+        </li>
+        <li>
+          <%= link_to "Pedir Taxi",new_service_path %>
+        </li>
+        <li class="">
+          <%= link_to "Conductores",drivers_path %>
+        </li>
+        <li>
+          <%= link_to "Taxis", taxis_path %>
+        </li>  
+      </ul>
+    </div><!-- end navbar-collapse -->
+  </div><!-- end container -->
+</div>
