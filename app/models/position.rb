@@ -10,11 +10,5 @@ class Position < ActiveRecord::Base
 	attr_accessible :latitude, :longitude, :taxi_id
 	belongs_to :taxi
 
-	def as_json
-		json = super
-		json.delete(:created_at.to_s)
-		json.delete(:updated_at.to_s)
-		return json
-	end
 
 end
