@@ -2,8 +2,8 @@
 
 one:
   value: MyString
-  user: 
+  user_id: 1
 
 two:
   value: MyString
-  user: 
+  user_id: 1

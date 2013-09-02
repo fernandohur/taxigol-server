@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiusrTest < ActiveSupport::TestCase
+class ApidUserControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830173209) do
+ActiveRecord::Schema.define(:version => 20130902140817) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -19,20 +19,18 @@ ActiveRecord::Schema.define(:version => 20130830173209) do
     t.datetime "updated_at",   :null => false
   end
 
-  create_table "apids", :force => true do |t|
-    t.text     "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "apiusrs", :force => true do |t|
+  create_table "apid_users", :force => true do |t|
     t.string   "value"
     t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  add_index "apiusrs", ["user_id"], :name => "index_apiusrs_on_user_id"
+  create_table "apids", :force => true do |t|
+    t.text     "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "drivers", :force => true do |t|
     t.string   "cedula",             :null => false

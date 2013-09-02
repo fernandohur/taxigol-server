@@ -37,6 +37,12 @@ TaxigolServer::Application.routes.draw do
     end
   end
 
+  resources :apid_user do
+    collection do
+      post 'reset'
+    end
+  end
+
   resources :panics do
     collection do
       post 'reset'
@@ -55,6 +61,7 @@ TaxigolServer::Application.routes.draw do
     namespace :v1 do
       resources :services
       resources :positions
+      resources :users
       resources :drivers do
         collection do
           get 'auth'
