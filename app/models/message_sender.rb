@@ -7,6 +7,10 @@ class MessageSender
 
   def initialize
     @uri = URI('https://go.urbanairship.com/api/push/broadcast/')
+    attr_taxi_app
+  end
+
+  def attr_taxi_app
     @appKey = ENV["URBAN_AIRSHIP_APP_KEY"]#'yO9cF34tTVSVKU8R1Qu7fw'
     @masterSecret = ENV["URBAN_AIRSHIP_MASTER_SECRET"]#'7TXRczMdQeKwUEg-5LSS5A'
     raise RuntimeError unless @appKey
@@ -24,18 +28,18 @@ class MessageSender
   end
 
   def push_default(alert,key,value)
-    push(get_payload(alert,{key=>value,:action=>'default'}))
+    push(get_android_payload(alert,{key=>value,:action=>'default'}))
   end
 
   def push_payload(alert, key_values={})
-    push(get_payload(alert,key_values))
+    push(get_android_payload(alert,key_values))
   end
 
   def get_default_payload(alert, key, value)
-    get_payload alert, {key=>value}
+    get_android_payload alert, {key=>value}
   end
 
-  def get_payload(alert, key_values={})
+  def get_android_payload(alert, key_values={})
     json_payload={
         :android=>{
             :alert=>alert,
@@ -44,6 +48,43 @@ class MessageSender
     }.to_json
     return json_payload
   end
+
+  def attr_user_app
+    @appKey = ENV["USER_APP_KEY_UA"]
+    @masterSecret = ENV["USER_APP_MASTER_SECRET_UA"]
+  end
+
+  def push_user_payload(device, alert, reg_id)
+    if(device=="ios")
+      push(get_ios_user_payload(alert, reg_id))
+    elsif(device=="android")
+      push(get_android_user_payload(alert, reg_id))
+    else
+      puts("---no se pueden enviar notificaciones a otros dispositivos----")
+    end
+  end
+
+  def get_ios_user_payload(alert, dev_token)
+    json_payload={
+        :aps=> {
+        :alert=>alert
+    },
+        :device_tokens=>dev_token
+    }.to_json
+    return json_payload
+  end
+
+  def get_android_user_payload(alert, user_apid)
+    json_payload={
+        :android=>{
+            :alert=>alert
+        },
+        :apids=>user_apid
+    }.to_json
+    return json_payload
+  end
+
+
 
 end
 
