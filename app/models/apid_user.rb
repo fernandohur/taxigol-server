@@ -1,5 +1,5 @@
 class ApidUser < ActiveRecord::Base
-  attr_accessible :user_id, :value
+  attr_accessible :user_id, :value, :device
 
   belongs_to :user
 
