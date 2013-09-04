@@ -66,20 +66,20 @@ class MessageSender
 
   def get_ios_user_payload(alert, dev_token)
     json_payload={
+        :device_tokens=>[dev_token],
         :aps=> {
         :alert=>alert
-    },
-        :device_tokens=>dev_token
+    }
     }.to_json
     return json_payload
   end
 
   def get_android_user_payload(alert, user_apid)
     json_payload={
+        :apids=>[user_apid],
         :android=>{
             :alert=>alert
-        },
-        :apids=>user_apid
+        }
     }.to_json
     return json_payload
   end
