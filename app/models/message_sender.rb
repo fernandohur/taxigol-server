@@ -55,9 +55,9 @@ class MessageSender
   end
 
   def push_user_payload(device, alert, reg_id)
-    if(device=="ios")
+    if(device=="iOS")
       push(get_ios_user_payload(alert, reg_id))
-    elsif(device=="android")
+    elsif(device=="Android")
       push(get_android_user_payload(alert, reg_id))
     else
       puts("---no se pueden enviar notificaciones a otros dispositivos----")

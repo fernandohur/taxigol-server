@@ -12,8 +12,15 @@ class BroadcasterController < ApplicationController
 		end
 
 		render_message('broadcast sent successfully')
+
 	rescue Exception => e
 		render_error(e)
-	end
+  end
+
+  def notify_user
+    id_user = params[:user_id]
+    message = params[:message]
+    User.find(id_user).push_notification(message)
+  end
 
 end

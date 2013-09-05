@@ -55,6 +55,12 @@ TaxigolServer::Application.routes.draw do
     end
   end
 
+  resources :broadcaster do
+    collection do
+      post 'notify_user'
+    end
+  end
+
   match '/broadcast' => 'broadcaster#broadcast', via: :post  
 
   namespace :api, defaults: {format: 'json'} do
