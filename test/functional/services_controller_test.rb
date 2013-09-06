@@ -18,7 +18,7 @@ class ServicesControllerTest < ActionController::TestCase
   # Use Service.last to access the created service
   def create_service
     assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>rand.to_s, :verification_code=>(rand*100).to_i.to_s, :service_type =>'normal', :latitude=>rand, :longitude=>rand}
+      post :create, {:format=>:json, :address=>rand.to_s, :verification_code=>(rand*100).to_i.to_s, :service_type =>'normal', :user_id => 1, :latitude=>rand, :longitude=>rand}
     end
     return Service.last
   end
@@ -78,11 +78,12 @@ class ServicesControllerTest < ActionController::TestCase
   # test setup method
   setup do
 
-    @service1 = Service.construct("12","calle 132 a # 19-43", "normal")
+    Service.delete_all
+    @service1 = Service.construct("12","calle 132 a # 19-43", "normal", 1)
     @service1.save
-    @service2 = Service.construct("19","kra 132 a # 19-43", "aeropuerto")
+    @service2 = Service.construct("19","kra 132 a # 19-43", "aeropuerto", 2)
     @service2.save
-    @service3 = Service.construct("88","calle 132BIS # 19-43", "normal")
+    @service3 = Service.construct("88","calle 132BIS # 19-43", "normal", 1)
     @service3.save
 
     @taxi = Taxi.get_or_create("asd123")
@@ -239,29 +240,21 @@ class ServicesControllerTest < ActionController::TestCase
     should_contain_error_message(@response, Service::StateChangeError)
   end
 
-  test "get to index with no params should return all services" do
-
-    get :index ,{:format=>:json}
-    services = MultiJson.load(@response.body)
-    should_contain_service(services,@service1)
-    should_contain_service(services,@service2)
-    should_contain_service(services,@service3)
-    assert Service.all.size==3
-  end
-
   test "post to create with latitude and longitude should init those attrs" do
     address = 'calle 132 a # 19-43'
     verification_code = '12'
     service_type = 'normal'
+    user_id = 1
     latitude = 12.32
     longitude = 13.45
     assert_difference 'Service.all.size',1 do
-      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code, :service_type=>service_type, :latitude=>latitude,:longitude=>longitude}
+      post :create, {:format=>:json, :address=>address, :verification_code=>verification_code, :service_type=>service_type, :user_id => user_id, :latitude=>latitude,:longitude=>longitude}
     end
     s = Service.last
     assert s.address == address
     assert s.verification_code == verification_code
     assert s.service_type == service_type
+    assert s.user_id == user_id
     assert s.latitude == latitude
     assert s.longitude == longitude
   end
@@ -286,6 +279,7 @@ class ServicesControllerTest < ActionController::TestCase
   	address = 'calle 132 a # 19-43'
   	verification_code = '12'
     service_type = 'normal'
+    user_id = 1
   	latitude = 12.995
   	longitude = -92.352
   	tip = '50.000'
@@ -294,6 +288,7 @@ class ServicesControllerTest < ActionController::TestCase
   		:address => address,
   		:verification_code => verification_code,
       :service_type => service_type,
+      :user_id => user_id,
   		:latitude => latitude,
   		:longitude => longitude,
   		:tip => tip }

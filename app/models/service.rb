@@ -13,8 +13,8 @@ class Service < ActiveRecord::Base
   validates :address, presence: true
   validates :state, presence: true
 
-  after_create :notify_creation
-  after_save :notify_save
+  #after_create :notify_creation
+  #after_save :notify_save
 
   ################
   ## Attributes ##
@@ -29,7 +29,7 @@ class Service < ActiveRecord::Base
   #
   # This method should be called to construct the Service instead of calling Service.new
   #
-  def Service.construct(verification_code, address, service_type, latitude=nil, longitude=nil, user_id, tip='')
+  def Service.construct(verification_code, address, service_type, user_id, latitude=nil, longitude=nil, tip='')
     s = Service.new(
     	:verification_code=>verification_code,
     	:address => address,

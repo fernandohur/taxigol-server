@@ -22,6 +22,7 @@ module Api
 			# 		longitude: 5.21,
 			# 		service_type: "normal",
 			# 		state: "pendiente",
+      #     user_id: 1,
 			# 		taxi_id: null,
 			# 		tip: "",
 			# 		updated_at: "2013-08-27T20:50:50Z",
