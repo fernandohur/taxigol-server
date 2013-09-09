@@ -55,11 +55,7 @@ TaxigolServer::Application.routes.draw do
     end
   end
 
-  resources :broadcaster do
-    collection do
-      post 'notify_user'
-    end
-  end
+  match '/broadcast/user' => 'broadcaster#notify_user', via: :post
 
   match '/broadcast' => 'broadcaster#broadcast', via: :post  
 
