@@ -21,6 +21,8 @@ class BroadcasterController < ApplicationController
     id_user = params[:user_id]
     message = params[:message]
     User.find(id_user).push_notification(message)
+    rescue ActiveRecord::RecordNotFound
+      respond_with nil
   end
 
 end
