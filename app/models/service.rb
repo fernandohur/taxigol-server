@@ -13,7 +13,7 @@ class Service < ActiveRecord::Base
   validates :address, presence: true
   validates :state, presence: true
 
-  #after_create :notify_creation
+  after_create :notify_creation
   #after_save :notify_save
 
   ################
