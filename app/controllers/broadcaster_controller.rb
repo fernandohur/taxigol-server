@@ -23,6 +23,7 @@ class BroadcasterController < ApplicationController
     User.find(id_user).push_notification(message)
     rescue ActiveRecord::RecordNotFound
       respond_with nil
+    render_message('broadcast sent successfully')
   end
 
 end
