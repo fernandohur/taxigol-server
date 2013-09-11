@@ -59,6 +59,7 @@ class Service < ActiveRecord::Base
   # this method is executed after .save is called
   def notify_creation
     sender = MessageSender.new
+    sender.attr_taxi_app
     sender.push_payload('',
       {
         :service_id=>self.id.to_s,
@@ -69,6 +70,7 @@ class Service < ActiveRecord::Base
 
   def notify_save
     sender = MessageSender.new
+    sender.attr_taxi_app
     service_id = self.id.to_s
     service_state = self.state.to_s
     sender.push_payload('',

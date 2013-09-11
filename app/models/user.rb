@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   def push_notification(message)
     reg_id = self.apid_user
     sender = MessageSender.new
+    sender.attr_user_app
     sender.push_user_payload(reg_id.device, message, reg_id.value)
   end
 end

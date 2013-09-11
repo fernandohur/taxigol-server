@@ -5,6 +5,7 @@ class BroadcasterController < ApplicationController
 		message = params[:message]
 		payload = params[:payload]
 		message_sender = MessageSender.new
+    message_sender.attr_taxi_app
 		if payload == nil || payload.empty?
 			message_sender.push_payload(message, {:action => :broadcast})
 		else

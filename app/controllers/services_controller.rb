@@ -57,6 +57,7 @@ class ServicesController < ApplicationController
     respond_to do |format|
       if @service.save
         message_sender = MessageSender.new
+        message_sender.attr_taxi_app
         message_sender.push_default('','service_id',@service.id.to_s)
         format.json { render json: @service, status: :created, location: @service }
       else
