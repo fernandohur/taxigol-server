@@ -11,4 +11,12 @@ class Position < ActiveRecord::Base
 	belongs_to :taxi
 
 
+	def delete_old
+
+	end
+
+	def get_last(taxi_id)
+		
+	end
+
 end
