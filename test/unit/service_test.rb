@@ -270,5 +270,21 @@ class ServiceTest < ActiveSupport::TestCase
     end
   end
 
+  test 'probar que se crean bien los crossroads' do
+    primero = Service.create_crossroad("Calle 116 # 14 - 46")
+    segundo = Service.create_crossroad("Calle 116 # 14 - 47")
+    tercero = Service.create_crossroad("Calle 116 # 14 - 47 S Edificio")
+    cuarto = Service.create_crossroad("Cll 24 B 27 A 41")
+    quinto = Service.create_crossroad("Cll 24 B 27 A 41 Sur")
+    sexto = Service.create_crossroad("Av Suba 120-63")
+
+    assert primero == "Calle 116 # 14  par"
+    assert segundo == "Calle 116 # 14  impar"
+    assert tercero == "Calle 116 # 14  sur impar"
+    assert cuarto == "Cll 24 B 27 A  impar"
+    assert quinto == "Cll 24 B 27 A  sur impar"
+    assert sexto == "Av Suba 120 impar"
+  end
+
 
 end

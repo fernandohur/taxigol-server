@@ -43,6 +43,15 @@ class Service < ActiveRecord::Base
   end
 
 
+  ##
+  # se sobre escribe el metodo de create
+  ##
+  def Service.create(hashVal)
+      crsroad = Service.create_crossroad(hashVal["address"])
+      hashVal["crossroad"] = crsroad
+      super(hashVal)
+  end
+
   #############
   ## Methods ##
   #############
