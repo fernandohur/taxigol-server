@@ -19,7 +19,7 @@ class Service < ActiveRecord::Base
   ################
   ## Attributes ##
   ################
-  attr_accessible :taxi_id, :verification_code, :address, :service_type, :latitude, :longitude,:state,:tip, :user_id
+  attr_accessible :taxi_id, :verification_code, :address, :service_type, :latitude, :longitude,:state,:tip, :user_id, :crossroad
   belongs_to :taxi
 
   ##################
@@ -46,6 +46,51 @@ class Service < ActiveRecord::Base
   #############
   ## Methods ##
   #############
+
+  def Service.create_crossroad(valor)
+    a = valor
+    complete = a
+    oddEven = ""
+    firstWords = ""
+    sur = ""
+
+    #Para el caso de la forma FirstWords 14 - oddEven (sur)?
+    reg = a.scan(/-\ *\d+/)
+    if reg.size != 0
+       firstWords = a.split(/\-/).first
+       numbers = reg.first.scan(/\d+/)
+       numb = numbers.first.to_i
+       if numb.even?
+          oddEven = "par"
+       else
+         oddEven = "impar"
+       end
+       if a.scan(/\-\ *\d+\ *(?:sur$|s$|sur |s )/i).size !=0
+         sur = " sur"
+       end
+    else
+      # para el caso en donde no hay - y hay 3 digitos e.g: "Cll 24 B 27 A 41"
+      reg2 = a.scan(/\d+/)
+      if reg2.size >= 3
+        numb2 = reg2[2].to_i
+        firstWords = a.split(/#{numb2}/).first
+        if numb2.even?
+          oddEven = "par"
+        else
+          oddEven = "impar"
+        end
+        if a.scan(/#{numb2}\ *(?:sur$|s$|sur |s )/i).size != 0
+           sur = " sur"
+        end
+      end
+
+    end
+
+    if firstWords != "" && oddEven != ""
+      complete = firstWords + sur + " " + oddEven
+    end
+    return complete
+  end
 
   def Service.update(id, service_hash)
     service = Service.find(id)
