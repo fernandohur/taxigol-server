@@ -10,14 +10,20 @@ class Position < ActiveRecord::Base
 	attr_accessible :latitude, :longitude, :taxi_id
 	belongs_to :taxi
 
+	# finds the latest position created by a given taxi
 	def Position.find_last(taxi_id)
 		Position.where(:taxi_id=>taxi_id).order(:created_at).reverse_order.limit(1).first
 	end
 
+	# finds the date of the latest position object given a taxi_id.
+	# Destroys all Positions older than that one. 
+	# Note that given that the database stores at the second level,
+	# if more than one position is created in a given second then
+	# their created_at value will be equal
 	def Position.delete_old(taxi_id)
 		relation = Position.where(:taxi_id=>taxi_id)
 		last = relation.last
-		relation.delete_all("created_at < '#{last.created_at}'")
+		relation.delete_all("created_at <= '#{last.created_at}'")
 	end
 
 end
