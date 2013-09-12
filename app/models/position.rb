@@ -10,13 +10,12 @@ class Position < ActiveRecord::Base
 	attr_accessible :latitude, :longitude, :taxi_id
 	belongs_to :taxi
 
-
-	def delete_old
-
+	def Position.find_last(taxi_id)
+		Position.where(:taxi_id=>taxi_id).order(:created_at).reverse_order.limit(1).first
 	end
 
-	def get_last(taxi_id)
-		
+	def Position.remove_old
+		Position.where(:taxi_id=>taxi_id).order(:created)
 	end
 
 end

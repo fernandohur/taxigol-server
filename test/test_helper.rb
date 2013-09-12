@@ -104,4 +104,31 @@ class ActiveSupport::TestCase
     File.new("test/fixtures/#{filename}")
   end
 
+  def rand_int(max=50)
+    return (1+rand*max).to_i
+  end
+
+  # compares two models and asserts that all of their attr_accesible 
+  # match using assert_equal
+  def assert_models_match(model1, model2)
+    clazz = model1.class
+    attributes = clazz.attr_accessible[:default]
+    
+    attributes.each do |attribute|
+      if attribute.size > 0
+        assert_equal model1.send(attribute),model2.send(attribute), 
+        "#{model1} compared to #{model2} but failed"
+      end 
+    end
+  end
+
+
+  def assert_model_matches_json(model,json,attributes)
+    keys = attributes.keys
+    keys.each do |key|
+      assert_equal model.send(key),json.send("[]",key), 
+      "comparing #{model} and #{json} did not match at #{model.send(key)} vs #{json.send("[]",key)}" 
+    end
+  end
+
 end
