@@ -48,6 +48,7 @@ class Service < ActiveRecord::Base
   ##
   def Service.create(hashVal)
       crsroad = Service.create_crossroad(hashVal["address"])
+      puts("----------" + crsroad + "-----------")
       hashVal["crossroad"] = crsroad
       super(hashVal)
   end
