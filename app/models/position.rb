@@ -14,8 +14,10 @@ class Position < ActiveRecord::Base
 		Position.where(:taxi_id=>taxi_id).order(:created_at).reverse_order.limit(1).first
 	end
 
-	def Position.remove_old
-		Position.where(:taxi_id=>taxi_id).order(:created)
+	def Position.delete_old(taxi_id)
+		relation = Position.where(:taxi_id=>taxi_id)
+		last = relation.last
+		relation.delete_all("created_at < '#{last.created_at}'")
 	end
 
 end

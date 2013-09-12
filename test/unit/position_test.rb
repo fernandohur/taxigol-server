@@ -74,13 +74,41 @@ class PositionTest < ActiveSupport::TestCase
 		assert_positions_match position, Position.find_last(1)
 	end
 
-	test "remove old positions " do
-		#give
-		rand_int.times do
-			rand_int.times do |i|
-				hash = get_position_hash(rand,rand,i)
-				Position.create(hash)
-			end
+	test "remove old positions should remove all but the latest" do
+		
+		taxi_id = 1
+		taxi2_id = 2;
+
+		#case 1 only one position
+		Position.delete_all
+		Position.create get_position_hash(rand,rand,taxi_id)
+		Position.delete_old(taxi_id)
+		
+		assert_equal 1,Position.all.size
+
+		#case 2 more than one position
+		Position.delete_all
+		Position.create get_position_hash(rand,rand,taxi_id)
+		position = Position.create get_position_hash(rand,rand,taxi_id)
+		Position.delete_old(taxi_id)
+		
+		assert_equal 1, Position.all.size
+		assert_positions_match Position.first, position
+		assert_positions_match Position.last, position
+
+		#case 3 more than one position from several different taxis
+		Position.delete_all
+		5.times { Position.create get_position_hash(rand,rand,taxi_id) }
+		5.times { Position.create get_position_hash(rand,rand,taxi2_id) }
+		taxi1_position = Position.create get_position_hash(rand,rand,taxi_id)
+		taxi2_position = Position.create get_position_hash(rand,rand,taxi2_id)
+		assert_difference 'Position.all.size',-5 do
+			Position.delete_old(taxi_id)
+			assert_positions_match taxi1_position, Position.where(:taxi_id=>taxi_id).last
+		end
+		assert_difference 'Position.all.size',-5 do
+			Position.delete_old(taxi2_id)
+			assert_positions_match taxi2_position, Position.where(:taxi_id=>taxi2_id).last
 		end
 	end
 

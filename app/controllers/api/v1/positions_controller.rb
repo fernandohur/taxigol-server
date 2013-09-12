@@ -13,13 +13,16 @@ module Api
 			end
 
 			# GET /positions/last/?taxi_id={taxi id}
+			# 
 			def last
-				raise RuntimeError, "unsupported operation (for now)"
+				respond_with Position.find_last(params[:taxi_id])
 			end
 
 			# POST /positions
 			def create
-				respond_with Position.create(params[:position])
+				position = Position.create(params[:position])
+				Position.delete_old(position.taxi_id)
+				respond_with position
 			end
 
 		end
