@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
 
 	after_filter :set_access_control_headers
+  before_filter :authenticate
 
   #
   # permit javascript to execute out of origin
@@ -39,15 +40,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  protected
+
   def authenticate
     authenticate_or_request_with_http_basic do |username, password|
-      driver = Driver.auth(username,password)
-      if driver
-        session[:id]=driver.id
-        return true
-      else
-        return false
-      end
+      username == ENV["ADMIN_USERNAME"] && password == ENV["ADMIN_PASSWORD"]
     end
   end
 

@@ -1,0 +1,27 @@
+// Place all the styles related to the requests controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "./bootstrap/variables.less";
+
+#map-canvas{
+	width: 100%;
+	height: 100%;
+}
+
+#address-panel{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: @gray-lighter;
+	z-index: 1000;
+	
+	.input-group{
+		width:80%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+}

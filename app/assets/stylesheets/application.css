@@ -9,7 +9,9 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require variables.less
+ *= require bootstrap/variables.less
+ *= require home.css.less
+ *= require requests.css.less
  */
 
 body,html{

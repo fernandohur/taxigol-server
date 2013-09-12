@@ -10,5 +10,14 @@ class Position < ActiveRecord::Base
 	attr_accessible :latitude, :longitude, :taxi_id
 	belongs_to :taxi
 
+	def Position.find_last(taxi_id)
+		Position.where(:taxi_id=>taxi_id).order(:created_at).reverse_order.limit(1).first
+	end
+
+	def Position.delete_old(taxi_id)
+		relation = Position.where(:taxi_id=>taxi_id)
+		last = relation.last
+		relation.delete_all("created_at < '#{last.created_at}'")
+	end
 
 end

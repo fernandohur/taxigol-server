@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class DriverTest < ActiveSupport::TestCase
-
+  include ActionDispatch::TestProcess
   #=========================
   # helper methods
   #=========================
@@ -25,7 +25,7 @@ class DriverTest < ActiveSupport::TestCase
     password = 'mypwd'
     name = 'richard the third'
     placa = 'ABC987'
-    extend ActionDispatch::TestProcess
+    
     image = fixture_file_upload 'sample_file.png'
 
     driverHash = Hash.new

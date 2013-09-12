@@ -1,0 +1,60 @@
+<div id="map-canvas"></div>
+
+<div id="address-panel">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="ingresa tu dirección">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="button">Pedir taxi</button>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgGzKuhM7giCRIAY-4BAmW8pGVhyZyfnc&sensor=false">
+</script>
+<script type="text/javascript">
+	var map = null;
+
+	function initialize() {
+		var mapOptions = {
+			center: new google.maps.LatLng(4.6023996, -74.0655158),
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById("map-canvas"),
+			mapOptions);
+
+		getLocation();
+	}
+
+	function getLocation()
+	{
+		if (navigator.geolocation)
+		{
+			navigator.geolocation.getCurrentPosition(showPosition);
+		}
+		else{
+			console.log("no geolocation in this browser")
+		}
+	}
+	function showPosition(position)
+	{
+		var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);		
+		var marker = new google.maps.Marker();
+		map.panTo(latLng);
+		marker.setDraggable(true);
+		marker.setPosition(latLng);
+		marker.setMap(map);
+		marker.setIcon('<%= image_path "map_marker.png" %>');
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+
+
+</script>

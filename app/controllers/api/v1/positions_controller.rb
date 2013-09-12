@@ -4,11 +4,7 @@ module Api
 
 			respond_to :json
 
-			# GET /positions
-			def index
-				respond_with Position.all
-			end
-
+			# @deprecated
 			# GET /positions/:id
 			def show
 				respond_with Position.find(params[:id])
@@ -17,23 +13,16 @@ module Api
 			end
 
 			# GET /positions/last/?taxi_id={taxi id}
+			# 
 			def last
-				raise RuntimeError, "unsupported operation (for now)"
+				respond_with Position.find_last(params[:taxi_id])
 			end
 
 			# POST /positions
 			def create
-				respond_with Position.create(params[:position])
-			end
-
-			# PUT /positions/:id
-			def update
-				respond_with Position.update(params[:id],params[:position])
-			end
-
-			# DELETE /positions/:id
-			def destroy
-				respond_with Position.destroy(params[:id])
+				position = Position.create(params[:position])
+				Position.delete_old(position.taxi_id)
+				respond_with position
 			end
 
 		end
