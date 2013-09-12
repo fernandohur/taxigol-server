@@ -27,7 +27,8 @@ module Api
 			# 		tip: "",
 			# 		updated_at: "2013-08-27T20:50:50Z",
 			# 		verification_code: "12"
-			# 	}
+			# 	},
+			# 	...
 			# ]
 			def index
 				respond_with Service.all

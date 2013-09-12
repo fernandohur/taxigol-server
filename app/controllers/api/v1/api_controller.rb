@@ -13,7 +13,7 @@ module Api
 			# @title string representing the error
 			# @message string representing the error
 			def render_error(title, message)
-				respond_with {:error=>title,:message=>message}
+				respond_with({:error=>title,:message=>message})
 			end
 
 			# renders an exception as follows
