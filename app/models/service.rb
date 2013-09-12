@@ -26,26 +26,8 @@ class Service < ActiveRecord::Base
   ## Constructors ##
   ##################
 
-  #
-  # This method should be called to construct the Service instead of calling Service.new
-  #
-  def Service.construct(verification_code, address, service_type, user_id, latitude=nil, longitude=nil, tip='')
-    s = Service.new(
-    	:verification_code=>verification_code,
-    	:address => address,
-      :service_type => service_type,
-    	:latitude => latitude,
-    	:longitude => longitude,
-    	:state => Service.pending,
-      :user_id => user_id,
-    	:tip => tip)
-    return s
-  end
-
-
-  ##
-  # se sobre escribe el metodo de create
-  ##
+  # @Overrides
+  # Creates a new service and generates a crossroad value
   def Service.create(hashVal)
       crsroad = Service.create_crossroad(hashVal["address"])
       hashVal["crossroad"] = crsroad
@@ -56,6 +38,7 @@ class Service < ActiveRecord::Base
   ## Methods ##
   #############
 
+  # returns a crossroad given an address
   def Service.create_crossroad(valor)
     a = valor
     complete = a
@@ -101,6 +84,10 @@ class Service < ActiveRecord::Base
     return complete
   end
 
+  # Updates the service with the given id with the new service as a hash
+  # Note that this method can throw a StateChangeError if the update is illegal
+  # @param id the id of the service
+  # @param service_hash a hash representing the service (like a json)
   def Service.update(id, service_hash)
     service = Service.find(id)
     state = service_hash[:state]
@@ -110,7 +97,7 @@ class Service < ActiveRecord::Base
     return service.reload       
   end
 
-  # this method is executed after .save is called
+  # this method is executed after the service is created
   def notify_creation
     sender = MessageSender.new
     sender.attr_taxi_app
@@ -122,6 +109,7 @@ class Service < ActiveRecord::Base
     )
   end
 
+  # this method is executed after the service's {@link Service#save} is called
   def notify_save
     sender = MessageSender.new
     sender.attr_taxi_app
@@ -135,12 +123,10 @@ class Service < ActiveRecord::Base
     )  
   end
 
-  #
   # Updates the Service's state
   # state a string with the following posible 
   # values {:confirmado, :cancelado, :abandonado, :cumplido}. 
   # Any other value will raise a StateChange
-  #
   def update_state(state, taxi_id = nil, verification_code = nil)
     state = state.intern
     taxi_id = taxi_id.to_i
@@ -159,7 +145,7 @@ class Service < ActiveRecord::Base
   end
 
   def Service.get(params={})
-    return Service.all(:limit=>50,:order=>"created_at desc")
+    return Service.where("").order_by(:created_at).reverse_order.limit(50)
   end
 
   # returns all the services with the given state
