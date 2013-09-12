@@ -5,6 +5,7 @@ class BroadcasterController < ApplicationController
 		message = params[:message]
 		payload = params[:payload]
 		message_sender = MessageSender.new
+    message_sender.attr_taxi_app
 		if payload == nil || payload.empty?
 			message_sender.push_payload(message, {:action => :broadcast})
 		else
@@ -21,8 +22,11 @@ class BroadcasterController < ApplicationController
     id_user = params[:user_id]
     message = params[:message]
     User.find(id_user).push_notification(message)
-    rescue ActiveRecord::RecordNotFound
-      respond_with nil
+    render_message('broadcast sent successfully')
+    rescue => ex
+      respond_to do |format|
+            format.json { render :json => ex.message, :status => 400 }
+      end
   end
 
 end
