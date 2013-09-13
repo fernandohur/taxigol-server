@@ -123,9 +123,8 @@ class ActiveSupport::TestCase
   end
 
 
-  def assert_model_matches_json(model,json,attributes)
-    keys = attributes.keys
-    keys.each do |key|
+  def assert_model_matches_json(model,json,attributes=json.keys)
+    attributes.each do |key|
       assert_equal model.send(key),json.send("[]",key), 
       "comparing #{model} and #{json} did not match at #{model.send(key)} vs #{json.send("[]",key)}" 
     end

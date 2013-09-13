@@ -35,6 +35,7 @@ class PositionTest < ActiveSupport::TestCase
 		assert_equal hash[:taxi_id],position.taxi_id
 	end
 
+	# asserts that all attr_accesible fields match between two positions
 	def assert_positions_match(position1,position2)
 		assert_models_match(position1,position2)
 	end
@@ -90,6 +91,8 @@ class PositionTest < ActiveSupport::TestCase
 		Position.delete_all
 		Position.create get_position_hash(rand,rand,taxi_id)
 		position = Position.create get_position_hash(rand,rand,taxi_id)
+		position.created_at=-1.seconds.ago
+		position.save
 		Position.delete_old(taxi_id)
 		
 		assert_equal 1, Position.all.size
@@ -102,6 +105,12 @@ class PositionTest < ActiveSupport::TestCase
 		5.times { Position.create get_position_hash(rand,rand,taxi2_id) }
 		taxi1_position = Position.create get_position_hash(rand,rand,taxi_id)
 		taxi2_position = Position.create get_position_hash(rand,rand,taxi2_id)
+
+		taxi1_position.created_at=-2.seconds.ago
+		taxi2_position.created_at=-2.seconds.ago
+		taxi1_position.save
+		taxi2_position.save
+
 		assert_difference 'Position.all.size',-5 do
 			Position.delete_old(taxi_id)
 			assert_positions_match taxi1_position, Position.where(:taxi_id=>taxi_id).last
