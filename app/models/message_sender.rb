@@ -5,16 +5,42 @@ require 'json'
 
 class MessageSender
 
+  #
+  # Constants
+  #
+
+  # api url used for broadcasting messages
+  URBAN_AIRSHIP_API_URL = 'https://go.urbanairship.com/api/push/broadcast/'
+  # urban airship app key used for the driver app
+  DRIVER_APP_KEY = "URBAN_AIRSHIP_APP_KEY"
+  # urban airship master secret key used for driver app
+  DRIVER_MASTER_KEY = "URBAN_AIRSHIP_MASTER_SECRET"
+  # urban airship app key used for the user's app
+  USER_APP_KEY = "USER_APP_KEY_UA"
+  # urban airship master secret key used for user' app
+  USER_MASTER_KEY = "USER_APP_MASTER_SECRET_UA"
+
   def initialize
-    @uri = URI('https://go.urbanairship.com/api/push/broadcast/')
+    @uri = URI(URBAN_AIRSHIP_API_URL)
     attr_taxi_app
   end
 
+  # Sets the keys to be used by the MessageSender
+  def set_keys(app_key, master_secret_key)
+    @appKey = appKey
+    @masterSecret = master_secret_key
+    raise RuntimeError "appkey cannot be nil" unless @appKey
+    raise RuntimeError "master secret key cannot bil" unless @masterSecret
+  end
+
+  # set the keys used by the user app
+  def attr_user_app
+    set_keys(USER_APP_KEY,USER_MASTER_KEY)
+  end
+
+  # set the keys used by the driver app
   def attr_taxi_app
-    @appKey = ENV["URBAN_AIRSHIP_APP_KEY"]#'yO9cF34tTVSVKU8R1Qu7fw'
-    @masterSecret = ENV["URBAN_AIRSHIP_MASTER_SECRET"]#'7TXRczMdQeKwUEg-5LSS5A'
-    raise RuntimeError unless @appKey
-    raise RuntimeError unless @masterSecret
+    set_keys(DRIVER_APP_KEY,DRIVER_MASTER_KEY)
   end
 
 	def push(payload_json)
@@ -47,11 +73,6 @@ class MessageSender
         }
     }.to_json
     return json_payload
-  end
-
-  def attr_user_app
-    @appKey = ENV["USER_APP_KEY_UA"]
-    @masterSecret = ENV["USER_APP_MASTER_SECRET_UA"]
   end
 
   def push_user_payload(device, alert, reg_id)

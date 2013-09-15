@@ -19,7 +19,16 @@ class Service < ActiveRecord::Base
   ################
   ## Attributes ##
   ################
-  attr_accessible :taxi_id, :verification_code, :address, :service_type, :latitude, :longitude,:state,:tip, :user_id, :crossroad
+  attr_accessible :taxi_id, 
+    :verification_code, 
+    :address, 
+    :service_type, 
+    :latitude, 
+    :longitude,
+    :state,
+    :tip, 
+    :user_id, 
+    :crossroad
   belongs_to :taxi
 
   ##################
@@ -28,11 +37,10 @@ class Service < ActiveRecord::Base
 
   # @Overrides
   # Creates a new service and generates a crossroad value
-  def Service.create(hashVal)
-      crsroad = Service.create_crossroad(hashVal["address"])
-      puts("----------" + crsroad + "-----------")
-      hashVal["crossroad"] = crsroad
-      super(hashVal)
+  def Service.create(service_hash)
+      crossroad = Service.create_crossroad(service_hash["address"])
+      service_hash["crossroad"] = crossroad
+      super(service_hash)
   end
 
   #############
@@ -119,15 +127,19 @@ class Service < ActiveRecord::Base
     sender.push_payload('',
       {
         :service_id=>service_id,
+        :state=>service_state,
         :"com.thinkbites.taxista.state_changed"=>service_id
       }
     )  
   end
 
   # Updates the Service's state
-  # state a string with the following posible 
+  # @param state a string with the following posible 
   # values {:confirmado, :cancelado, :abandonado, :cumplido}. 
   # Any other value will raise a StateChange
+  # @param taxi_id the taxi's id, this value can be nil when not necesary
+  # @param verification_code a string representig the verification code, tipically
+  # a 2 digit number passed as a string.
   def update_state(state, taxi_id = nil, verification_code = nil)
     state = state.intern
     taxi_id = taxi_id.to_i

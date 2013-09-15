@@ -83,7 +83,6 @@ module Api
 			def destroy
 				respond_with Service.destroy(params[:id])
 			end
-
 		end
 	end
 end

@@ -16,13 +16,16 @@ class Driver < ActiveRecord::Base
   # Creates a new driver
   # @param driver: a hash representing the driver model
   # @param placa: a string that must match 'XYZ123'
-  #
   def Driver.construct(driver, placa)
     taxi = Taxi.get_or_create(placa)
     driver = Driver.new(driver)
     driver.taxi_id=taxi.id
 
     return driver
+  end
+
+  def Driver.create(hash)
+
   end
 
   #
