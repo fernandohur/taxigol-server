@@ -49,48 +49,56 @@ class Service < ActiveRecord::Base
 
   # returns a crossroad given an address
   def Service.create_crossroad(valor)
-    a = valor
-    complete = a
-    oddEven = ""
-    firstWords = ""
+    complete_crossroad = valor
+    odd_or_even = ""
+    first_words = ""
     sur = ""
 
-    #Para el caso de la forma FirstWords 14 - oddEven (sur)?
-    reg = a.scan(/-\ *\d+/)
-    if reg.size != 0
-       firstWords = a.split(/\-/).first
-       numbers = reg.first.scan(/\d+/)
-       numb = numbers.first.to_i
-       if numb.even?
-          oddEven = "par"
+    #Para el caso de la forma first_words number - odd_or_even (sur)?
+    #Se obtiene lo que va después del "- No.", es decir el identificador
+    reg_exp = valor.scan(/-\ *\d+/)
+    if reg_exp.size != 0
+       # Se obtiene las coordenadas que hacen parte de la dirección, lo que va hasta el "-"
+       first_words = valor.split(/\-/).first
+
+       numbers = reg_exp.first.scan(/\d+/)
+       #Se transforma el identificador a entero
+       identificador = numbers.first.to_i
+       if identificador.even?
+          odd_or_even = "par"
        else
-         oddEven = "impar"
+         odd_or_even = "impar"
        end
-       if a.scan(/\-\ *\d+\ *(?:sur$|s$|sur |s )/i).size !=0
+       # si la dirreción es en el sur o no
+       if valor.scan(/\-\ *\d+\ *(?:sur$|s$|sur |s )/i).size !=0
          sur = " sur"
        end
     else
       # para el caso en donde no hay - y hay 3 digitos e.g: "Cll 24 B 27 A 41"
-      reg2 = a.scan(/\d+/)
-      if reg2.size >= 3
-        numb2 = reg2[2].to_i
-        firstWords = a.split(/#{numb2}/).first
-        if numb2.even?
-          oddEven = "par"
+      # se obtiene una lista de los digitos que hacen parte de la dirección
+      reg_exp_2 = valor.scan(/\d+/)
+      if reg_exp_2.size >= 3
+        #se obtiene el tercer digito que pertenece al identificador de las coordenadas
+        identificador2 = reg2[2].to_i
+        #se obtiene las coordenadas sin el identificador
+        first_words = valor.split(/#{numb2}/).first
+        if identificador2.even?
+          odd_or_even = "par"
         else
-          oddEven = "impar"
+          odd_or_even = "impar"
         end
-        if a.scan(/#{numb2}\ *(?:sur$|s$|sur |s )/i).size != 0
+        # si la dirección es en el sur o no
+        if valor.scan(/#{numb2}\ *(?:sur$|s$|sur |s )/i).size != 0
            sur = " sur"
         end
       end
 
     end
 
-    if firstWords != "" && oddEven != ""
-      complete = firstWords + sur + " " + oddEven
+    if first_words != "" && odd_or_even != ""
+      complete_crossroad = first_words + sur + " " + odd_or_even
     end
-    return complete
+    return complete_crossroad
   end
 
   # Updates the service with the given id with the new service as a hash

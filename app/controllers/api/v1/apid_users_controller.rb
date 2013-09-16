@@ -21,14 +21,7 @@ module Api
       # POST /apid_users
       # POST /apid_users.json
       def create
-        @apid_user = ApidUser.get_or_create(params[:apid_user], params[:user_id])
-        respond_to do |format|
-          if @apid_user.save
-            format.json { render json: @apid_user, status: :created, location: @user }
-          else
-            format.json { render json: render_error(@apid_user.errors) }
-          end
-        end
+        respond_with ApidUser.create_or_update(params[:apid_user])
       end
 
       # PUT /apid_users/1
