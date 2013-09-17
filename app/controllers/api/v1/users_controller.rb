@@ -19,6 +19,13 @@ module Api
         respond_with User.find(params[:id])
       end
 
+      # GET /find
+      # return's a users' json representation
+      def find
+        respond_with User.search_user(params[:celular])
+      end
+
+
       # POST /drivers
       # creates a new driver
       def create

@@ -48,7 +48,11 @@ TaxigolServer::Application.routes.draw do
       resources :services
       resources :positions
       resources :apid_users
-      resources :users
+      resources :users do
+        collection do
+          get 'find'
+        end
+      end
 
       resources :drivers do
         collection do
