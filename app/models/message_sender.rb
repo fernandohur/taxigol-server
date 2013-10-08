@@ -12,13 +12,13 @@ class MessageSender
   # api url used for broadcasting messages
   URBAN_AIRSHIP_API_URL = 'https://go.urbanairship.com/api/push/broadcast/'
   # urban airship app key used for the driver app
-  DRIVER_APP_KEY = "URBAN_AIRSHIP_APP_KEY"
+  DRIVER_APP_KEY = ENV['URBAN_AIRSHIP_APP_KEY']
   # urban airship master secret key used for driver app
-  DRIVER_MASTER_KEY = "URBAN_AIRSHIP_MASTER_SECRET"
+  DRIVER_MASTER_KEY = ENV['URBAN_AIRSHIP_MASTER_SECRET']
   # urban airship app key used for the user's app
-  USER_APP_KEY = "USER_APP_KEY_UA"
+  USER_APP_KEY = ENV['USER_APP_KEY_UA']
   # urban airship master secret key used for user' app
-  USER_MASTER_KEY = "USER_APP_MASTER_SECRET_UA"
+  USER_MASTER_KEY = ENV['USER_APP_MASTER_SECRET_UA']
 
   def initialize
     @uri = URI(URBAN_AIRSHIP_API_URL)
@@ -27,7 +27,7 @@ class MessageSender
 
   # Sets the keys to be used by the MessageSender
   def set_keys(app_key, master_secret_key)
-    @appKey = appKey
+    @appKey = app_key
     @masterSecret = master_secret_key
     raise RuntimeError "appkey cannot be nil" unless @appKey
     raise RuntimeError "master secret key cannot bil" unless @masterSecret

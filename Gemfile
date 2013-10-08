@@ -19,6 +19,7 @@ end
 gem 'httparty'
 gem 'paperclip'
 gem 'aws-sdk'
+gem 'bunny'
 
 
 # Gems used only for assets and not required
