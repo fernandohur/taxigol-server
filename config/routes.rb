@@ -46,7 +46,7 @@ TaxigolServer::Application.routes.draw do
     namespace :v1 do
 
       resources :services
-      resources :positions
+      resources :taxis
       resources :apid_users
       resources :users do
         collection do
@@ -60,7 +60,12 @@ TaxigolServer::Application.routes.draw do
         end
       end
 
-      resources :taxis
+      resources :positions do
+        collection do
+          get 'last'
+        end
+      end
+
     end
   end
   
