@@ -20,8 +20,8 @@ module Api
 
 			# POST /positions
 			def create
+        Position.delete_old(position.taxi_id)
 				position = Position.create(params[:position])
-				Position.delete_old(position.taxi_id)
 				respond_with position
 			end
 
