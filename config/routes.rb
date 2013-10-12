@@ -1,5 +1,8 @@
 TaxigolServer::Application.routes.draw do
 
+  resources :companies
+
+
   match '/admin' => "home#index"
   match '/' => "home#home"
 
@@ -45,6 +48,7 @@ TaxigolServer::Application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
 
+      resources :companies
       resources :services
       resources :taxis
       resources :apid_users
@@ -57,6 +61,9 @@ TaxigolServer::Application.routes.draw do
       resources :drivers do
         collection do
           get 'auth'
+        end
+        member do
+          get 'companies'
         end
       end
 

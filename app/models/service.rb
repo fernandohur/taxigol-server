@@ -38,6 +38,7 @@ class Service < ActiveRecord::Base
   # @Overrides
   # Creates a new service and generates a crossroad value
   def Service.create(service_hash)
+      raise ArgumentError unless ServiceTypes::ALL.include? service_hash["service_type"]
       crossroad = Service.create_crossroad(service_hash["address"])
       service_hash["crossroad"] = crossroad
       super(service_hash)

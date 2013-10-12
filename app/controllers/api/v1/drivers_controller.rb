@@ -43,7 +43,16 @@ module Api
 			# deletes the driver with the specified id
 			def destroy
 				respond_with Driver.destroy(params[:id])
-			end
+      end
+
+
+      #GET /drivers/:id/companies
+      # get the companies of a driver
+      def companies
+        respond_with Driver.find(params[:id]).companies
+      rescue ActiveRecord::RecordNotFound
+        respond_with ActiveRecord::RecordNotFound
+      end
 
 		end
 	end
