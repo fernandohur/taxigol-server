@@ -49,7 +49,7 @@ module Api
       #GET /drivers/:id/companies
       # get the companies of a driver
       def companies
-        respond_with Driver.find(params[:id]).companies
+        respond_with Driver.find(params[:id]).company
       rescue ActiveRecord::RecordNotFound
         respond_with ActiveRecord::RecordNotFound
       end
