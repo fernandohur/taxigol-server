@@ -166,7 +166,7 @@ class Service < ActiveRecord::Base
   end
 
   def Service.get(params={})
-    return Service.where("").order_by(:created_at).reverse_order.limit(50)
+    return Service.where("").order(:created_at).reverse_order.limit(50)
   end
 
   # returns all the services with the given state
