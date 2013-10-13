@@ -49,7 +49,7 @@ module Api
       #GET /drivers/:id/companies
       # get the companies of a driver
       def companies
-        companies = Driver.find_by_cedula(params[:id]).company
+        companies = Driver.find(params[:id]).company
         if companies.size == 0
           companies = Array.new
         end
