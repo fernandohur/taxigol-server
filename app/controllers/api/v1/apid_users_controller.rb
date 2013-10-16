@@ -21,7 +21,7 @@ module Api
       # POST /apid_users
       # POST /apid_users.json
       def create
-        respond_with ApidUser.create_or_update(params[:apid_user])
+        respond_with :api,:v1, ApidUser.create_or_update(params[:apid_user])
       end
 
       # PUT /apid_users/1
