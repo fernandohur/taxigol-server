@@ -1,9 +1,9 @@
 module ServiceTypes
   NORMAL = "normal"
-  HORA = "taxi_por_hora"
+  HORA = "hora"
   INTERMUNICIPAL = "intermunicipal"
   AEROPUERTO = "aeropuerto"
-  VALES_TV = "vales_taxis_verdes"
-  VALES_TC = "vales_teleclub"
-  ALL = [NORMAL, HORA, INTERMUNICIPAL, VALES_TC, VALES_TV]
+  VALE_TV = "vale_taxis_verdes"
+  VALE_TC = "vale_teleclub"
+  ALL = [NORMAL, HORA, INTERMUNICIPAL, VALE_TC, VALE_TV]
 end
