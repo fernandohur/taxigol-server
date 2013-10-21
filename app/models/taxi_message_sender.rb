@@ -37,7 +37,7 @@ class TaxiMessageSender
         :apids => [apid_value],
         :android => {
             :alert => alert,
-            :extra => {:service_id => service_id, :"com.thinkbites.taxista.state_changed" => "com.thinkbites.taxista.state_changed"}
+            :extra => {:service_id => service_id.to_s, :"com.thinkbites.taxista.state_changed" => "com.thinkbites.taxista.state_changed"}
         }
     }
     Urbanairship.push(notification)
@@ -48,7 +48,7 @@ class TaxiMessageSender
   def notify_create_service(service_id)
     notify_broadcast('',
                      {
-                         :service_id=>service_id,
+                         :service_id=>service_id.to_s,
                          :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
                      }
     )
