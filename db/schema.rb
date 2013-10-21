@@ -11,12 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131018155143) do
+ActiveRecord::Schema.define(:version => 20131021025007) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "apid_drivers", :force => true do |t|
+    t.string   "value"
+    t.integer  "driver_id"
+    t.string   "device"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "apid_users", :force => true do |t|
@@ -105,6 +113,14 @@ ActiveRecord::Schema.define(:version => 20131018155143) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.integer  "current_driver_id"
+  end
+
+  create_table "tokens", :force => true do |t|
+    t.string   "value"
+    t.integer  "company_id"
+    t.string   "customer"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
