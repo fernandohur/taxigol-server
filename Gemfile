@@ -20,6 +20,7 @@ gem 'httparty'
 gem 'paperclip'
 gem 'aws-sdk'
 gem 'bunny'
+gem 'urbanairship'
 
 
 # Gems used only for assets and not required

@@ -14,7 +14,7 @@ class Service < ActiveRecord::Base
   validates :state, presence: true
 
   after_create :notify_creation
-  #after_save :notify_save
+  after_save :notify_save
 
   ################
   ## Attributes ##
@@ -129,17 +129,10 @@ class Service < ActiveRecord::Base
 
   # this method is executed after the service's {@link Service#save} is called
   def notify_save
-    sender = MessageSender.new
-    sender.attr_taxi_app
-    service_id = self.id.to_s
-    service_state = self.state.to_s
-    sender.push_payload('',
-      {
-        :service_id=>service_id,
-        :state=>service_state,
-        :"com.thinkbites.taxista.state_changed"=>service_id
-      }
-    )  
+      if is_canceled
+        sender = MessageSender.new
+        sender.attr_taxi_app
+      end
   end
 
   # Updates the Service's state

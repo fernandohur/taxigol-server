@@ -22,7 +22,10 @@ class MessageSender
 
   def initialize
     @uri = URI(URBAN_AIRSHIP_API_URL)
-    attr_taxi_app
+  end
+
+  def push_general()
+
   end
 
   # Sets the keys to be used by the MessageSender
@@ -61,24 +64,23 @@ class MessageSender
     push(get_android_payload(alert,key_values))
   end
 
-  def get_default_payload(alert, key, value)
-    get_android_payload alert, {key=>value}
-  end
-
   def get_android_payload(alert, key_values={})
     json_payload={
         :android=>{
             :alert=>alert,
             :extra=>key_values
+        },
+        :options=>{
+        :expiry => "300"
         }
     }.to_json
     return json_payload
   end
 
   def push_user_payload(device, alert, reg_id)
-    if(device=="iOS")
+    if device=="iOS"
       push(get_ios_user_payload(alert, reg_id))
-    elsif(device=="Android")
+    elsif device=="Android"
       push(get_android_user_payload(alert, reg_id))
     else
       puts("---no se pueden enviar notificaciones a otros dispositivos----")

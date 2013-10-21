@@ -7,7 +7,7 @@ class Driver < ActiveRecord::Base
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
-  has_one :apid
+  has_one :apid_driver
   has_and_belongs_to_many :company
   has_attached_file :image, styles: {
       small: '125x125>'
@@ -63,6 +63,18 @@ class Driver < ActiveRecord::Base
     json[:image_url] = image.url(:small)
     return json
   end
+
+  #
+  # Notify driver
+  #
+  def push_notification(message)
+    reg_id = self.apid_driver
+    sender = MessageSender.new
+    sender.attr_taxi_app
+    sender.push
+    sender.push_user_payload(reg_id.device, message, reg_id.value)
+  end
+
 
 
 end

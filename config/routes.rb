@@ -1,5 +1,8 @@
 TaxigolServer::Application.routes.draw do
 
+  resources :tokens
+
+
   resources :companies
 
 
@@ -52,6 +55,7 @@ TaxigolServer::Application.routes.draw do
       resources :services
       resources :taxis
       resources :apid_users
+      resources :apid_drivers
       resources :users do
         collection do
           get 'find'
