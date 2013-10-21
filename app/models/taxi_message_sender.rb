@@ -29,18 +29,20 @@ class TaxiMessageSender
     Urbanairship.broadcast_push(notification)
   end
 
-  def notify_cancel_to_taxi(driver_id, service_id)
+  def notify_update(alert, driver_id, service_id)
     driver = Driver.find(driver_id)
     apid_driver = driver.apid_driver
     apid_value = apid_driver.value
     notification = {
         :apids => [apid_value],
         :android => {
-            :alert => 'El servicio fue cancelado',
-            :extra => {:service_id => service_id}
+            :alert => alert,
+            :extra => {:service_id => service_id, :"com.thinkbites.taxista.state_changed" => "com.thinkbites.taxista.state_changed"}
         }
     }
     Urbanairship.push(notification)
+  rescue ActiveRecord::RecordNotFound
+    puts '---- No se encontró el driver para notificar ---'
   end
 
   def notify_create_service(service_id)

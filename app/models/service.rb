@@ -117,21 +117,19 @@ class Service < ActiveRecord::Base
 
   # this method is executed after the service is created
   def notify_creation
-    sender = MessageSender.new
-    sender.attr_taxi_app
-    sender.push_payload('',
-      {
-        :service_id=>self.id.to_s,
-        :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
-      }
-    )
+    sender = TaxiMessageSender.new
+    sender.notify_create_service(id)
   end
 
   # this method is executed after the service's {@link Service#save} is called
   def notify_save
       if is_canceled
-        sender = MessageSender.new
-        sender.attr_taxi_app
+        sender = TaxiMessageSender.new
+        service_taxi = self.taxi
+        if  service_taxi != nil && service_taxi.current_driver_id != nil
+          sender.notify_update('Servicio cancelado',service_taxi.current_driver_id,id)
+        end
+
       end
   end
 
