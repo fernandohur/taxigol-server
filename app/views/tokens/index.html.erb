@@ -1,0 +1,27 @@
+<h1>Listing tokens</h1>
+
+<table>
+  <tr>
+    <th>Value</th>
+    <th>Company</th>
+    <th>Customer</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @tokens.each do |token| %>
+  <tr>
+    <td><%= token.value %></td>
+    <td><%= token.company_id %></td>
+    <td><%= token.customer %></td>
+    <td><%= link_to 'Show', token %></td>
+    <td><%= link_to 'Edit', edit_token_path(token) %></td>
+    <td><%= link_to 'Destroy', token, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Token', new_token_path %>

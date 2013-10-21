@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Value:</b>
+  <%= @token.value %>
+</p>
+
+<p>
+  <b>Company:</b>
+  <%= @token.company_id %>
+</p>
+
+<p>
+  <b>Customer:</b>
+  <%= @token.customer %>
+</p>
+
+
+<%= link_to 'Edit', edit_token_path(@token) %> |
+<%= link_to 'Back', tokens_path %>
