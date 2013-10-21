@@ -42,7 +42,7 @@ class TaxiMessageSender
     }
     Urbanairship.push(notification)
   rescue ActiveRecord::RecordNotFound
-    puts '---- No se encontró el driver para notificar ---'
+    puts '---- No se encontro el driver para notificar ---'
   end
 
   def notify_create_service(service_id)
