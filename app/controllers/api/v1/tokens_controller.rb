@@ -33,6 +33,12 @@ module Api
         respond_with Token.destroy(params[:id])
       end
 
+      def validate
+        value = params[:value]
+        company = params[:company]
+        respond_with Token.validate(company, value)
+      end
+
     end
   end
 end

@@ -78,6 +78,12 @@ TaxigolServer::Application.routes.draw do
         end
       end
 
+      resources :tokens do
+        collection do
+          get 'validate'
+        end
+      end
+
     end
   end
   
