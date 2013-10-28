@@ -1,6 +1,6 @@
 module Api
   module V1
-    class TokensController < ApplicationController
+    class TokensController < ApiController
 
       respond_to :json
 
