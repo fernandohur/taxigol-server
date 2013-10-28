@@ -64,17 +64,6 @@ class Driver < ActiveRecord::Base
     return json
   end
 
-  #
-  # Notify driver
-  #
-  def push_notification(message)
-    reg_id = self.apid_driver
-    sender = MessageSender.new
-    sender.attr_taxi_app
-    sender.push
-    sender.push_user_payload(reg_id.device, message, reg_id.value)
-  end
-
 
 
 end

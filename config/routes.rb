@@ -59,6 +59,7 @@ TaxigolServer::Application.routes.draw do
       resources :users do
         collection do
           get 'find'
+          post 'notify'
         end
       end
 

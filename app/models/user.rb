@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
     sender.push_user_payload(reg_id.device, message, reg_id.value)
   end
 
+
   def User.search_user(cel)
     user = nil
     if cel != ""

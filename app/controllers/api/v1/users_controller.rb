@@ -44,6 +44,17 @@ module Api
         respond_with User.destroy(params[:id])
       end
 
+
+      def notify
+        user_id = params[:user_id]
+        message = params[:message]
+        sender = UserMessageSender.new
+        sender.notify_user_app(message, user_id)
+        render_message("Notify user", "send successfully")
+      rescue Exception=>e
+        render_exception(e)
+      end
+
     end
   end
 end

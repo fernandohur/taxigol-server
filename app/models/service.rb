@@ -121,6 +121,7 @@ class Service < ActiveRecord::Base
     sender.notify_create_service(id)
   end
 
+
   # this method is executed after the service's {@link Service#save} is called
   def notify_save
       if is_canceled
