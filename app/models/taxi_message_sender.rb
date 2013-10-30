@@ -18,9 +18,8 @@ class TaxiMessageSender
     }
   end
 
-  def notify_broadcast(alert,  key_values={}, tags)
+  def notify_broadcast(alert,  key_values={})
     notification = {
-        :tags => [tags],
         :android=>{
             :alert=>alert,
             :extra=>key_values
@@ -47,14 +46,34 @@ class TaxiMessageSender
   end
 
   def notify_create_service(service_id, tags)
+    if tags == '' || tags == nil
     notify_broadcast('',
                      {
                          :service_id=>service_id.to_s,
                          :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
-                     },
-                     tags
+                     }
     )
+    else
+      notify_push_tag('',
+                      {
+                          :service_id=>service_id.to_s,
+                          :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
+                      },
+                      tags
+      )
+    end
   end
 
+  def notify_push_tag(alert,  key_values={}, tags)
+    notification = {
+        :tags => [tags],
+        :android=>{
+            :alert=>alert,
+            :extra=>key_values
+        },
+        :options=>@options
+    }
+    Urbanairship.push(notification)
+  end
 
 end
