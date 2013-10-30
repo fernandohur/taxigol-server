@@ -118,7 +118,14 @@ class Service < ActiveRecord::Base
   # this method is executed after the service is created
   def notify_creation
     sender = TaxiMessageSender.new
-    sender.notify_create_service(id)
+    type = self.service_type
+    tag =""
+    if type == ServiceTypes::VALE_TV
+       tag = 'Teleclub'
+    elsif type == ServiceTypes::VALE_TC
+       tag = 'Taxi verdes'
+    end
+    sender.notify_create_service(id, tag)
   end
 
 

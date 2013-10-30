@@ -18,8 +18,9 @@ class TaxiMessageSender
     }
   end
 
-  def notify_broadcast(alert,  key_values={})
+  def notify_broadcast(alert,  key_values={}, tags)
     notification = {
+        :tags =>[tags],
         :android=>{
             :alert=>alert,
             :extra=>key_values
@@ -45,24 +46,15 @@ class TaxiMessageSender
     puts '---- No se encontro el driver para notificar ---'
   end
 
-  def notify_create_service(service_id)
+  def notify_create_service(service_id, tags)
     notify_broadcast('',
                      {
                          :service_id=>service_id.to_s,
                          :"com.thinkbites.taxista.new_service"=>"com.thinkbites.taxista.new_service"
-                     }
+                     },
+                     tags
     )
   end
-
-  #def notify_user_app(device_token)
-  #  notification = {
-  #      :device_tokens => [device_token],
-  #      :aps => {:alert => 'el servicio cancelado',
-  #               :extra => {:foo => 'bar'}
-  #      }
-  #  }
-  #  Urbanairship.push(notification)
-  #end
 
 
 end
