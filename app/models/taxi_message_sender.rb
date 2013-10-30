@@ -20,7 +20,7 @@ class TaxiMessageSender
 
   def notify_broadcast(alert,  key_values={}, tags)
     notification = {
-        :tags =>[tags],
+        :tags => [tags],
         :android=>{
             :alert=>alert,
             :extra=>key_values

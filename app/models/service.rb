@@ -120,10 +120,10 @@ class Service < ActiveRecord::Base
     sender = TaxiMessageSender.new
     type = self.service_type
     tag =""
-    if type == ServiceTypes::VALE_TV
+    if type == ServiceTypes::VALE_TC
        tag = 'Teleclub'
-    elsif type == ServiceTypes::VALE_TC
-       tag = 'Taxi verdes'
+    elsif type == ServiceTypes::VALE_TV
+       tag = 'Taxis verdes'
     end
     sender.notify_create_service(id, tag)
   end

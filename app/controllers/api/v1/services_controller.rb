@@ -75,8 +75,8 @@ module Api
 			def update
 				resp = Service.update(params[:id],params[:service])
 				render json: resp
-			rescue ActiveRecord::RecordNotFound
-				respond_with Service::StateChangeError
+			rescue ActiveRecord::RecordNotFound, Service::StateChangeError => e
+				respond_with e
 			end
 
 			# DELETE /services/:id
