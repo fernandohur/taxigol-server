@@ -50,6 +50,15 @@
       <%= f.file_field :image %>
     </div>
 
+    <div class="control-group">
+      <% if @companies.nil?
+           puts "nil"
+         else %>
+          <%= f.label :companies, "Compañia", :class=>"control-label"%><br />
+          <%= f.collection_select :company_ids, @companies, :id, :name, {}, :multiple => true%>
+      <%end%>
+    </div>
+
     <br>
     <div class="actions">
       <%= f.submit "Crear Conductor",:class=>"btn btn-primary" %>

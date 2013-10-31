@@ -10,6 +10,19 @@ class TokensController < ApplicationController
     end
   end
 
+  # GET /tokens
+  # GET /tokens.json
+  def search
+    @companies = Company.get_top(4)
+    if params[:query] and params[:query].size > 0 then
+      @tokens = Token.search(params[:query])
+    end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @results }
+    end
+  end
+
   # GET /tokens/1
   # GET /tokens/1.json
   def show
@@ -25,7 +38,7 @@ class TokensController < ApplicationController
   # GET /tokens/new.json
   def new
     @token = Token.new
-
+    @companies = Company.all
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @token }
@@ -35,13 +48,14 @@ class TokensController < ApplicationController
   # GET /tokens/1/edit
   def edit
     @token = Token.find(params[:id])
+    @companies = Company.all
   end
 
   # POST /tokens
   # POST /tokens.json
   def create
     @token = Token.new(params[:token])
-
+    @token.company_id= params[:company]
     respond_to do |format|
       if @token.save
         format.html { redirect_to @token, notice: 'Token was successfully created.' }

@@ -15,10 +15,17 @@
     <%= f.label :value %><br />
     <%= f.text_field :value %>
   </div>
-  <div class="field">
-    <%= f.label :company_id %><br />
-    <%= f.number_field :company_id %>
-  </div>
+
+  <div class="control-group">
+    <%= f.label :company,"Compañia" ,:class=>"control-label"%>
+    <div class="controls">
+      <%= select_tag :company, options_from_collection_for_select(@companies, "id", "name"), :multiple=>false  %>
+    </div>
+   </div>
+  <!--div class="field">
+    <= f.label :company_id %><br />
+    <= f.number_field :company_id %>
+  </div-->
   <div class="field">
     <%= f.label :customer %><br />
     <%= f.text_field :customer %>

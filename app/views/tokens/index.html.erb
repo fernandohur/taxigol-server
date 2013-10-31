@@ -1,6 +1,7 @@
 <h1>Listing tokens</h1>
 
-<table>
+<table class="table table-condensed table-hover">
+  <thead>
   <tr>
     <th>Value</th>
     <th>Company</th>
@@ -9,17 +10,19 @@
     <th></th>
     <th></th>
   </tr>
-
-<% @tokens.each do |token| %>
-  <tr>
-    <td><%= token.value %></td>
-    <td><%= token.company_id %></td>
-    <td><%= token.customer %></td>
-    <td><%= link_to 'Show', token %></td>
-    <td><%= link_to 'Edit', edit_token_path(token) %></td>
-    <td><%= link_to 'Destroy', token, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+  </thead>
+  <tbody>
+  <% @tokens.each do |token| %>
+      <tr>
+        <td><%= token.value %></td>
+        <td><%= token.company.name %></td>
+        <td><%= token.customer %></td>
+        <td><%= link_to 'Show', token %></td>
+        <td><%= link_to 'Edit', edit_token_path(token) %></td>
+        <td><%= link_to 'Destroy', token, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
 </table>
 
 <br />

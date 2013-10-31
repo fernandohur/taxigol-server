@@ -14,7 +14,7 @@ class DriversController < ApplicationController
 
   def new
     @driver = Driver.new
-
+    @companies = Company.all
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @friend }
@@ -25,7 +25,6 @@ class DriversController < ApplicationController
   # GET /drivers/1.json
   def show
     @driver = Driver.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @driver }
@@ -35,13 +34,13 @@ class DriversController < ApplicationController
   # GET /users/1/edit
   def edit
     @driver = Driver.find(params[:id])
+    @companies = Company.all
   end
 
   # POST /drivers
   # POST /drivers.json
   def create
     @driver = Driver.construct(params[:driver], params[:placa])
-
     respond_to do |format|
       if @driver.save
         format.html { redirect_to @driver, notice: 'Driver was successfully created.' }

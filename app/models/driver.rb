@@ -3,7 +3,7 @@
 #
 class Driver < ActiveRecord::Base
 
-  attr_accessible :cedula, :name, :taxi_id, :password, :cel_number, :image
+  attr_accessible :cedula, :name, :taxi_id, :password, :cel_number, :image, :company_ids
 
 	validates_uniqueness_of :cedula
   belongs_to :taxi
