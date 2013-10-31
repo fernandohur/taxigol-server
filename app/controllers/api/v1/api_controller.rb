@@ -14,7 +14,7 @@ module Api
 			# @message string representing the error
 			def render_error(title, message)
         hash = {:error=> title, :message=>message}
-        render json: hash
+        render status: 403, json: hash
 			end
 
 			# renders an exception as follows
