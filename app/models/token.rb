@@ -4,6 +4,13 @@ class Token < ActiveRecord::Base
   belongs_to :company
 
 
+  def Token.update(id, token_hash)
+    token = Token.find(id)
+    token.price = token_hash[:price]
+    token.save!
+    return token
+  end
+
   def Token.validate(company_name, value)
     company = Company.find_by_name(company_name)
     if company !=nil

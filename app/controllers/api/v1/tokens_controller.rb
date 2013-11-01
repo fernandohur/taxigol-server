@@ -23,9 +23,10 @@ module Api
 
       # PUT /tokens/:id
       def update
-        respond_with Token.update(params[:id],params[:token])
+        resp = Token.update(params[:id],params[:token])
+        render json: resp
       rescue ActiveRecord::RecordNotFound
-        respond_with Token::StateChangeError
+        respond_with render_error("Error","No se encontro el token")
       end
 
       # DELETE /tokens/:id
