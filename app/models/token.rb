@@ -1,5 +1,5 @@
 class Token < ActiveRecord::Base
-  attr_accessible :company_id, :customer, :value
+  attr_accessible :company_id, :customer, :value, :price
   validates_uniqueness_of :value
   belongs_to :company
 
