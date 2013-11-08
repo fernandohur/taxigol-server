@@ -141,6 +141,16 @@ class Service < ActiveRecord::Base
       end
   end
 
+  #notify the user that the service should be rate
+  def Service.notify_rating(id)
+    service = Service.find(id)
+    user_id = service.user_id
+    if user_id != nil
+      sender = UserMessageSender.new
+      sender.notify_rate_service(user_id, service.id)
+    end
+  end
+
   # Updates the Service's state
   # @param state a string with the following posible 
   # values {:confirmado, :cancelado, :abandonado, :cumplido}. 

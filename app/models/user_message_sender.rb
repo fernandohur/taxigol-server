@@ -19,7 +19,7 @@ class UserMessageSender
     }
   end
 
-  def notify_user_app(alert, user_id)
+  def notify_user_app(alert, user_id, key_values={})
     user = User.find(user_id)
     apid_user = user.apid_user
     reg_id = apid_user.value
@@ -27,7 +27,7 @@ class UserMessageSender
     if device.casecmp("iOS") == 0
       notify_ios_app(alert, reg_id)
     elsif device.casecmp("Android") == 0
-      notify_android_app(alert, reg_id)
+      notify_android_app(alert, reg_id, key_values)
     else
       puts("---no se pueden enviar notificaciones a otros dispositivos----")
     end
@@ -46,16 +46,20 @@ class UserMessageSender
     @client.push(notification)
   end
 
-  def notify_android_app(alert, apid)
+  def notify_android_app(alert, apid, key_values={})
     notification = {
         :apids => [apid],
         :android => {
-            :alert => alert
+            :alert => alert,
+            :extra=>key_values
         }
     }
     @client.push(notification)
   end
 
+  def notify_rate_service(user_id, service_id)
+    notify_user_app("rating+#{service_id.to_s}", user_id)
+  end
 
 
 end

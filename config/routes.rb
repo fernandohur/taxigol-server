@@ -52,7 +52,6 @@ TaxigolServer::Application.routes.draw do
     namespace :v1 do
 
       resources :companies
-      resources :services
       resources :taxis
       resources :apid_users
       resources :apid_drivers
@@ -60,6 +59,12 @@ TaxigolServer::Application.routes.draw do
         collection do
           get 'find'
           post 'notify'
+        end
+      end
+
+      resources :services do
+        member do
+          post 'notify_rating'
         end
       end
 

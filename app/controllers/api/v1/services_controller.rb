@@ -82,7 +82,16 @@ module Api
 			# DELETE /services/:id
 			def destroy
 				respond_with Service.destroy(params[:id])
-			end
+      end
+
+
+      # POST /services/:id/notify_rating
+      def notify_rating
+          Service.notify_rating(params[:id])
+          render_message("Notify rating", "send successfully")
+      rescue ActiveRecord::RecordNotFound
+        respond_with nil
+      end
 		end
 	end
 end
