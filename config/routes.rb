@@ -55,6 +55,7 @@ TaxigolServer::Application.routes.draw do
       resources :taxis
       resources :apid_users
       resources :apid_drivers
+      resources :reviews
       resources :users do
         collection do
           get 'find'

@@ -1,12 +1,17 @@
 class Token < ActiveRecord::Base
-  attr_accessible :company_id, :customer, :value, :price
+  attr_accessible :company_id, :customer, :value, :price, :cost_center, :user_name
   validates_uniqueness_of :value
   belongs_to :company
 
 
   def Token.update(id, token_hash)
     token = Token.find(id)
-    token.price = token_hash[:price]
+    price = token_hash[:price]
+    if price
+      token.price = price
+    end
+    token.cost_center = token_hash[:cost_center]
+    token.user_name = token_hash[:user_name]
     token.save!
     return token
   end

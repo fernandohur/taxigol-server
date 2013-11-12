@@ -30,6 +30,7 @@ class Service < ActiveRecord::Base
     :user_id, 
     :crossroad
   belongs_to :taxi
+  has_one :review
 
   ##################
   ## Constructors ##

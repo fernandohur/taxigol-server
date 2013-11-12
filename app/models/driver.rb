@@ -9,6 +9,7 @@ class Driver < ActiveRecord::Base
   belongs_to :taxi
   has_one :apid_driver
   has_and_belongs_to_many :company
+  has_many :reviews
   has_attached_file :image, styles: {
       small: '125x125>'
   }

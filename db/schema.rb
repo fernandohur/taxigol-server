@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131101052504) do
+ActiveRecord::Schema.define(:version => 20131111225345) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -93,6 +93,16 @@ ActiveRecord::Schema.define(:version => 20131101052504) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "reviews", :force => true do |t|
+    t.string   "comment"
+    t.integer  "rating"
+    t.integer  "user_id"
+    t.integer  "driver_id"
+    t.integer  "service_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "services", :force => true do |t|
     t.integer  "taxi_id"
     t.string   "verification_code"
@@ -119,9 +129,11 @@ ActiveRecord::Schema.define(:version => 20131101052504) do
     t.string   "value"
     t.integer  "company_id"
     t.string   "customer"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "price"
+    t.string   "cost_center"
+    t.string   "user_name"
   end
 
   create_table "users", :force => true do |t|
