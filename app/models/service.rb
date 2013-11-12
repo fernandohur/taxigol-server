@@ -148,7 +148,7 @@ class Service < ActiveRecord::Base
     user_id = service.user_id
     if user_id != nil
       sender = UserMessageSender.new
-      sender.notify_rate_service(user_id, service.id)
+      sender.notify_rate_service(user_id, service)
     end
   end
 

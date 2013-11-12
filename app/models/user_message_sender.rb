@@ -57,8 +57,9 @@ class UserMessageSender
     @client.push(notification)
   end
 
-  def notify_rate_service(user_id, service_id)
-    notify_user_app("rating+#{service_id.to_s}", user_id)
+  def notify_rate_service(user_id, service)
+    taxi = service.taxi
+    notify_user_app("Taxista #{taxi.installation_id} fue confirmado", user_id)
   end
 
 
