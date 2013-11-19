@@ -24,4 +24,12 @@ class Token < ActiveRecord::Base
     end
     return nil
   end
+
+  def Token.create(token_hash, company_name)
+    company = Company.find_by_name(company_name)
+    if company != nil
+      token_hash["company_id"] = company.id
+      super(token_hash)
+    end
+  end
 end

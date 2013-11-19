@@ -18,7 +18,7 @@ module Api
 
       # POST /tokens
       def create
-        respond_with Token.create(params[:token])
+        respond_with Token.create(params[:token], params[:company_name])
       end
 
       # PUT /tokens/:id
